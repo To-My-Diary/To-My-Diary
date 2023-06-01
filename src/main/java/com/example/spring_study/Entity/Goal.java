@@ -1,9 +1,6 @@
 package com.example.spring_study.Entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -27,5 +24,6 @@ public class Goal extends BaseEntity{    // 생성날짜 클래스 상속으로 
     @ColumnDefault("0")
     private int achieve_rate;
     @ManyToOne
+    @Setter
     private User user;
 }
