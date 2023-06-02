@@ -1,9 +1,14 @@
 package com.example.spring_study.Entity;
 
+<<<<<<< Updated upstream
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+=======
+import com.example.spring_study.Enum.AchieveEnum;
+import lombok.*;
+>>>>>>> Stashed changes
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -21,7 +26,12 @@ public class Goal {
     private String content;
     private LocalDateTime createDate;
     @ColumnDefault("false")
+<<<<<<< Updated upstream
     private boolean achieve;
+=======
+    @Enumerated(EnumType.STRING)
+    private AchieveEnum achieve;
+>>>>>>> Stashed changes
     private LocalDateTime planDate;
     @ColumnDefault("0")
     private int achieve_rate;
