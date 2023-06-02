@@ -1,5 +1,6 @@
 package com.example.spring_study.Repository;
 
+<<<<<<< HEAD
 import com.example.spring_study.Entity.Goal;
 import com.example.spring_study.Entity.User;
 import com.example.spring_study.Enum.GenderEnum;
@@ -26,4 +27,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
 
+=======
+import com.example.spring_study.Entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+>>>>>>> 56a958fd51de5c5bd8df58d1041454306cc991d8
 }
