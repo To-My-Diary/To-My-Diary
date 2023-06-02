@@ -16,5 +16,5 @@ public class BaseEntity {
     @CreatedDate
     @Column(updatable = false)
     private LocalDate createDate; // 생성 날짜
-    //하하하하
+    // 안녕 나야 난데
 }
