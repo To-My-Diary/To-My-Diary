@@ -18,5 +18,5 @@ import java.time.LocalDateTime;
 public class BaseEntity {
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime createDate; // 생성 날짜
+    private LocalDate createDate; // 생성 날짜
 }

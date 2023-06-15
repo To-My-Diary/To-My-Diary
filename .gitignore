@@ -36,5 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
-### IntelliJ IDEA ###
-application.properties
+### properties ###
+**/application.properties
