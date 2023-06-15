@@ -1,55 +1,35 @@
 package com.example.spring_study;
 
-import com.example.spring_study.Enum.GenderType;
 import com.example.spring_study.Entity.Goal;
 import com.example.spring_study.Entity.User;
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
 import com.example.spring_study.Enum.AchieveEnum;
 import com.example.spring_study.Enum.GenderEnum;
->>>>>>> Stashed changes
+import com.example.spring_study.Repository.GoalRepository;
 import com.example.spring_study.Repository.UserRepository;
-import org.assertj.core.api.Assert;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.api.Assertions.*;
-=======
-import com.example.spring_study.Enum.GenderEnum;
-import com.example.spring_study.Repository.UserRepository;
->>>>>>> 56a958fd51de5c5bd8df58d1041454306cc991d8
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
-<<<<<<< HEAD
 class JwyTests {
-=======
-public class SpringStudyApplicationTests {
->>>>>>> 56a958fd51de5c5bd8df58d1041454306cc991d8
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    GoalRepository goalRepository;
     @Test
     void test(){
         User user1 = User.builder()
                 .name("정우용")
                 .email("111@naver.com")
-<<<<<<< HEAD
-                .gender(GenderType.M)
-                .pw("12345")
-                .pw_val("12345")
-=======
                 .gender(GenderEnum.M)
                 .pw("12345")
->>>>>>> 56a958fd51de5c5bd8df58d1041454306cc991d8
                 .build();
         Goal goal = Goal.builder()
                 .content("제목")
                 .achieve_rate(10)
-<<<<<<< HEAD
                 .achieve(AchieveEnum.doing)
                 .build();
         user1.addGoalList(goal);
@@ -61,16 +41,34 @@ public class SpringStudyApplicationTests {
 
         Assertions.assertThat("12345").isEqualTo(user.getPw());
 
-        List<User> arr = userRepository.findByGender(GenderEnum.F);
+        List<User> arr = userRepository.findByGender(GenderEnum.M);
 
         arr.stream()
                 .map(e -> e.getName())
                 .forEach(System.out::println);
-=======
-                .achieve(true)
+    }
+    @Test
+    void test3(){
+        Goal goal1 = Goal.builder()
+                .content("제목222")
+                .achieve_rate(20)
+                .achieve(AchieveEnum.fail)
                 .build();
-        user1.addGoalList(goal);
-        userRepository.save(user1);
->>>>>>> 56a958fd51de5c5bd8df58d1041454306cc991d8
+        goalRepository.save(goal1);
+        List<Goal> arr = goalRepository.findAllByOrderByCreateDateDesc();
+        arr.stream()
+                .map(e -> e.getGoalId())
+                .forEach(System.out::println);
+        List<Goal> arr1 = goalRepository.findAllByOrderByCreateDateAsc();
+        arr1.stream()
+                .map(e -> e.getGoalId())
+                .forEach(System.out::println);
+    }
+    @Test
+    void test4(){
+        List<Goal> arr = goalRepository.findByAchieve(AchieveEnum.achieve);
+        arr.stream()
+                .map(e -> e.getAchieve())
+                .forEach(System.out::println);
     }
 }

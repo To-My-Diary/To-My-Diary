@@ -1,6 +1,5 @@
 package com.example.spring_study.Repository;
 
-<<<<<<< HEAD
 import com.example.spring_study.Entity.Goal;
 import com.example.spring_study.Entity.User;
 import com.example.spring_study.Enum.GenderEnum;
@@ -20,19 +19,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAll();  // 모든 User 조회 (생략 가능)
 
-    List<User> findByGender(GenderEnum Type);
-
-
-
-
-
-
-=======
-import com.example.spring_study.Entity.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface UserRepository extends JpaRepository<User, Long> {
->>>>>>> 56a958fd51de5c5bd8df58d1041454306cc991d8
+    List<User> findByGender(GenderEnum Type);  // Gender값으로 User 조회
 }
