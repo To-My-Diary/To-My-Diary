@@ -71,4 +71,12 @@ class JwyTests {
                 .map(e -> e.getAchieve())
                 .forEach(System.out::println);
     }
+    @Test
+    void test5(){
+        User user = userRepository.findByEmail("111@naver.com").get();
+        List<Goal> arr = goalRepository.findByUserId(user.getId());
+        arr.stream()
+                .map(e -> e.getGoalId())
+                .forEach(System.out::println);
+    }
 }
