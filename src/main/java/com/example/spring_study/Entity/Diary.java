@@ -18,9 +18,6 @@ public class Diary extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long diaryId;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDate updateDate;
-
     @Column(length = 200)
     private String subject; // 제목
 
