@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -17,10 +16,6 @@ public class Diary extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long diaryId;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDate updateDate;
-
     @Column(length = 200)
     private String subject; // 제목
 
