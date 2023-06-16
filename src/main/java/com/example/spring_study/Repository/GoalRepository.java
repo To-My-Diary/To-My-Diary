@@ -18,5 +18,5 @@ public interface GoalRepository extends JpaRepository<Goal, Long> {
 
     List<Goal> findByAchieve(AchieveEnum Type);   // 목표 달성여부 값으로 조회
 
-    List<Goal> findByUserId(long id);   // 사용자별 목표 리스트 가져오기
+    List<Goal> findByUserEmail(String email);
 }
