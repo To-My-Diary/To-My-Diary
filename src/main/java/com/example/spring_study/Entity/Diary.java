@@ -16,6 +16,7 @@ public class Diary extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long diaryId;
+
     @Column(length = 200)
     private String subject; // 제목
 
