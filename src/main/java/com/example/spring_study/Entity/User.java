@@ -14,15 +14,13 @@ import java.util.List;
 @Builder // 빌더 어노테이션 위치 수정
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column(length=50, nullable = false)
     private String email;
     @Column(nullable = false)
     private String pw;
     @Column(nullable = false)
     private String name;
-    private int tel;
+    private String tel;
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
     @Builder.Default  // 빌더 패턴 사용시 초기화 설정을 위한 어노테이션
