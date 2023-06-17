@@ -30,7 +30,7 @@ public class Schedule extends BaseEntity {
     private LocalDate planDate; // 목표 날짜
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="user_email")
     private User user; // 사용자 (작성자)
 
 }
