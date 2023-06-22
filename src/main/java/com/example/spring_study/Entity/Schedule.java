@@ -1,6 +1,7 @@
 package com.example.spring_study.Entity;
 
 import com.example.spring_study.Enum.AchieveEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,6 +32,7 @@ public class Schedule extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_email")
+    @JsonIgnore  //서로를 참조하면서 무한 재귀함수가 실행 되게 된다. 해결방법 JsonIgnore
     private User user; // 사용자 (작성자)
 
 }

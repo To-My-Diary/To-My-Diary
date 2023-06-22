@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script>
+    <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -18,7 +18,6 @@
                 selectable:true,
                 selectMirror: true,
                 dateClick: function(e) {
-                    console.log(e);
                     alert(e.dateStr+' 클릭 !');
                     var clickDate = e.dateStr.split("-");
                     console.log(clickDate[0]);
@@ -31,10 +30,17 @@
                     $(function clickDate(){
                         $.ajax({
                             url: "/index",
-                            method: "POST",
-                            dataType: "text",
+                            type: "POST",
+                            dataType: "json",
                             data: JSON.stringify(obj),
-                            contentType: 'application/json',
+                            contentType: "application/json; charset=utf-8",
+                            success : function(result){
+                                console.log(result);
+                                $("#list").text(result)
+                            },
+                            error : function(rs){
+                                console.log(rs);
+                            }
                         })
                     })
                 },
@@ -68,25 +74,25 @@
                             url: "/full-calendar/calendar-admin-update",
                             method: "DELETE",
                             dataType: "json",
-                            data: JSON.stringify(events),
-                            contentType: 'application/json',
+                            data: JSON.stringify(events)
                         })
                     })
                 }
             },);
             calendar.render();
         });
-
     </script>
     <title>Document</title>
 </head>
 <body>
     <h1>My Calendar</h1>
+    <div id="list">
+        <h4 th:each="schedule, loop : ${scheduleList}">
+            [[${schedule.msg}]]
+        </h4>
+    </div>
     <div id='calendar'></div>
-    <h4 th:each="schedule, loop: ${scheduleList}">
-        [[${schedule.msg}]] - [[${schedule.user.email}]]
-    </h4>
-    <tr th:each="question, loop : ${pagingList}">
+
 </body>
 
 </html>

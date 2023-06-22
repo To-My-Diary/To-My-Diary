@@ -1,31 +1,35 @@
 package com.example.spring_study.Controller;
 
 import com.example.spring_study.Entity.Schedule;
-import com.example.spring_study.Repository.ScheduleRepository;
 import com.example.spring_study.Service.ScheduleService;
-import com.example.spring_study.VO.ClickDate;
+import com.example.spring_study.DTO.ClickDate;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class Home {
     private final ScheduleService scheduleService;
-    @GetMapping(value = {"/","/index"})
+    @GetMapping(value = "/index")
     public String index(Model model){
-        List<Schedule> scheduleList=  scheduleService.getTodaySchedule();
+        List<Schedule> scheduleList=  scheduleService.getSchedule();
         model.addAttribute("scheduleList", scheduleList);
         return "index";
     }
-    @PostMapping(value = {"/","/index"})
-    public String index(@RequestBody ClickDate clickDate, Model model){
+    @PostMapping(value = "/index")
+    @ResponseBody
+    public Object index(@RequestBody ClickDate clickDate){
         System.out.println(String.format("%s년%s월%s일", clickDate.getYear(), clickDate.getMonth(),clickDate.getDay()));
-        List<Schedule> scheduleList=  scheduleService.getTodaySchedule();
-        model.addAttribute("scheduleList", scheduleList);
-        return "index";
+        List<Schedule> scheduleList=  scheduleService.getSchedule(clickDate);
+        scheduleList.stream()
+                .map(e -> e.getCreateDate())
+                .forEach(System.out::println);
+        return scheduleList;
     }
 }
