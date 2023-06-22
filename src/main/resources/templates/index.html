@@ -7,12 +7,73 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link th:href="@{/fullcalendar-5.11.5/lib/main.css}" rel='stylesheet' />
     <script th:src="@{/fullcalendar-5.11.5/lib/main.js}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-            });
+                selectable:true,
+                selectMirror: true,
+                dateClick: function(e) {
+                    console.log(e);
+                    alert(e.dateStr+' 클릭 !');
+                    var clickDate = e.dateStr.split("-");
+                    console.log(clickDate[0]);
+                    console.log(clickDate[1]);
+                    console.log(clickDate[2]);
+                    var obj = new Object();
+                    obj.year = clickDate[0];
+                    obj.month = clickDate[1];
+                    obj.day = clickDate[2];
+                    $(function clickDate(){
+                        $.ajax({
+                            url: "/index",
+                            method: "POST",
+                            dataType: "text",
+                            data: JSON.stringify(obj),
+                            contentType: 'application/json',
+                        })
+                    })
+                },
+                events : [
+                    {
+                        title: '운동하기',
+                        start: '2023-06-18',
+                        end: '2023-06-20'
+                    },
+                    {
+                        title: '밥먹기',
+                        start: '2023-06-22'
+                    }
+
+                ],eventClick: function (info){
+                    if(confirm("'"+ info.event.title +"일정을 삭제하시겠습니까 ?")){
+                        // 확인 클릭 시
+                        info.event.remove();
+                    }
+
+                    console.log(info.event);
+                    var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                    var obj = new Object();
+                    obj.title = info.event._def.title;
+                    obj.start = info.event._instance.range.start;
+                    events.push(obj);
+
+                    console.log(events);
+                    $(function deleteData(){
+                        $.ajax({
+                            url: "/full-calendar/calendar-admin-update",
+                            method: "DELETE",
+                            dataType: "json",
+                            data: JSON.stringify(events),
+                            contentType: 'application/json',
+                        })
+                    })
+                }
+            },);
             calendar.render();
         });
 
@@ -20,7 +81,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>MyCalendar</h1>
+    <h1>My Calendar</h1>
     <div id='calendar'></div>
     <h4 th:each="schedule, loop: ${scheduleList}">
         [[${schedule.msg}]] - [[${schedule.user.email}]]
