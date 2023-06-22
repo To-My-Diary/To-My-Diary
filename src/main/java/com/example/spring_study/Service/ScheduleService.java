@@ -13,6 +13,6 @@ import java.util.List;
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     public List<Schedule> getTodaySchedule() {
-        return scheduleRepository.findAllByUser_emailAndCreateDate("111@naver.com", LocalDate.now());
+        return scheduleRepository.findAllByUser_emailAndCreateDate("111@naver.com", LocalDate.now().now());
     }
 }
