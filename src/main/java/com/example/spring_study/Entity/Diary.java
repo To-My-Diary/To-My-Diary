@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -29,9 +28,16 @@ public class Diary extends BaseEntity{
 
     @Column(length = 20)
     @Enumerated(EnumType.STRING)
-    private EmotionEnum achieve; // 기분
+    private EmotionEnum emotion; // 기분
 
     @JoinColumn(name="user_id")
     @ManyToOne
     private User user;
+
+    public void update(String subject, String content, EmotionEnum emotion, String img) {
+        this.subject = subject;
+        this.content = content;
+        this.emotion = emotion;
+        this.img = img;
+    }
 }

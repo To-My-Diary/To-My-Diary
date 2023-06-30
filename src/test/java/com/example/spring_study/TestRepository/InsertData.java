@@ -37,7 +37,7 @@ public class InsertData {
         Diary diary = Diary.builder()
                 .subject("일기 제목 " + random)
                 .content("일기 내용 " + random)
-                .achieve(EmotionEnum.happy)
+                .emotion(EmotionEnum.happy)
                 .user(user)
                 .build();
         diaryRepository.save(diary);
