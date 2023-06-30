@@ -1,5 +1,6 @@
 package com.example.spring_study.Service;
 
+import com.example.spring_study.Controller.Home;
 import com.example.spring_study.Entity.Schedule;
 import com.example.spring_study.Repository.ScheduleRepository;
 import com.example.spring_study.DTO.ClickDate;
@@ -17,13 +18,12 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
 
+    // 메인화면 Get 요청 처리
     public List<Schedule> getSchedule() {
-        System.out.println("실행1");
         return scheduleRepository.findAllByUser_emailAndCreateDate("111@naver.com", LocalDate.now());
     }
-
+    // 메인화면 Post 요청 처리
     public List<Schedule> getSchedule(ClickDate date) {
-        System.out.println("실행2");
         return scheduleRepository.findAllByUser_emailAndCreateDate("111@naver.com", LocalDate.of(date.getYear(), date.getMonth(),date.getDay()));
     }
 
