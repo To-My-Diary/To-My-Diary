@@ -17,4 +17,6 @@ public interface GoalRepository extends JpaRepository<Goal, Long> {
     List<Goal> findAllByOrderByCreateDateAsc();   // 목표 날짜(내림차순) 조희
 
     List<Goal> findByAchieve(AchieveEnum Type);   // 목표 달성여부 값으로 조회
+
+    List<Goal> findByUserEmail(String email);
 }

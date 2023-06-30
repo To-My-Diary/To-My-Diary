@@ -1,6 +1,5 @@
 package com.example.spring_study.Repository;
 
-import com.example.spring_study.Entity.Goal;
 import com.example.spring_study.Entity.User;
 import com.example.spring_study.Enum.GenderEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
