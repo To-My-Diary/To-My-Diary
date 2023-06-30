@@ -13,6 +13,9 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     /** 스케줄 아이디로 찾기 */
     Schedule findByScheduleId(Long id);
 
+    //  특정 사용자 특정 스케줄 가져오기
+    Schedule findByUser_emailAndScheduleId(String email, Long id);
+
     /** 사용자별 전체 스케줄 가져오기  */
     List<Schedule> findAllByUser_email(String email);
     

@@ -1,10 +1,10 @@
 package com.example.spring_study.Service;
 
-import com.example.spring_study.Controller.Home;
 import com.example.spring_study.Entity.Schedule;
 import com.example.spring_study.Repository.ScheduleRepository;
-import com.example.spring_study.DTO.ClickDate;
+import com.example.spring_study.Dto.ClickDate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
@@ -40,7 +40,18 @@ public class ScheduleService {
         schedule.update(scheduleDto.getMsg(), scheduleDto.getAchieve());
         System.out.println("[" + scheduleDto.getMsg() + "] 할 일을 수정했습니다.");
     }
-    
+
+    //  달성 여부 수정
+    @Transactional
+    @Modifying
+    public Schedule modifyAchieve(ScheduleDto scheduleDto) {
+        Schedule schedule = scheduleRepository.findByUser_emailAndScheduleId(scheduleDto.getUserId(), scheduleDto.getScheduleId());
+        schedule.setAchieve(scheduleDto.getAchieve());
+        scheduleRepository.save(schedule);
+
+        return schedule;
+    }
+
     /** 할 일 삭제 */
     public void deleteSchedule(Long scheduleId) {
         scheduleRepository.deleteById(scheduleId);

@@ -1,8 +1,6 @@
 package com.example.spring_study.Dto;
 
-import com.example.spring_study.Entity.Schedule;
 import com.example.spring_study.Enum.AchieveEnum;
-import com.example.spring_study.Repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

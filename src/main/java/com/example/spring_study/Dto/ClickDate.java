@@ -1,4 +1,4 @@
-package com.example.spring_study.DTO;
+package com.example.spring_study.Dto;
 
 import lombok.*;
 
