@@ -16,20 +16,20 @@ public class Home {
 
     // 메인화면 (GET) - request : 없음
     @GetMapping(value = "/index")
-    public Object index(){
+    public Object index_Get(){
         List<Schedule> scheduleList=  scheduleService.getSchedule();
         return scheduleList;
     }
 
     // 메인화면 (POST) - request : ClickDate 필드
     @PostMapping(value = "/index")
-    public Object index3(@RequestBody ClickDate clickDate){
+    public Object index_Post(@RequestBody ClickDate clickDate){
         List<Schedule> scheduleList=  scheduleService.getSchedule(clickDate);
         return scheduleList;
     }
 
     @PostMapping(value = "/index/modify_scheduleAchieve")
-    public Object index2(@RequestBody ScheduleDto scheduleDto){
+    public Object modifyScheduleAchieve(@RequestBody ScheduleDto scheduleDto){
         Schedule schedule = scheduleService.modifyAchieve(scheduleDto);
         return schedule;
     }
