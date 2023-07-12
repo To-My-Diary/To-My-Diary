@@ -1,8 +1,10 @@
 package com.example.spring_study.Config;
 
+import com.example.spring_study.Converter.GenderEnumConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,10 +22,11 @@ public class SecurityConfig {
         http.csrf().disable();
         http.authorizeHttpRequests()
                 .requestMatchers(
-                        new AntPathRequestMatcher("/index")).permitAll()
+                        new AntPathRequestMatcher("/index**")).permitAll()
                 .anyRequest().permitAll()
                 .and()
-                .formLogin();
+                .formLogin()
+                    .loginPage("/login");
         return http.build();
     }
 

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+</head>
+<body>
+    <h1>로그인</h1>
+    <form action="/doJoin" method="post">
+        이메일 : <input type="text" name="email" placeholder="Enter your Email" /><br/>
+        비밀번호 : <input type="password" name="pw" placeholder="Enter your Password"/><br/>
+        비밀번호 확인 : <input type="password" name="confirmPw" placeholder="Enter your Password"/><br/>
+        이름 : <input type="text" name="name" placeholder="Enter your Name"><br>
+        전화번호 : <input type="text" name="tel" placeholder="Enter your Tel"><br/>
+        성별 : <select name="gender">
+            <option value="1">남자</option>
+            <option value="2">여자</option>
+        </select>
+        <button value="submit">Join</button><button value="reset">Reset</button>
+    </form>
+
+</body>
+</html>

@@ -3,6 +3,7 @@ package com.example.spring_study.ScheduleTest;
 import com.example.spring_study.Entity.Schedule;
 import com.example.spring_study.Entity.User;
 import com.example.spring_study.Enum.AchieveEnum;
+import com.example.spring_study.Enum.GenderEnum;
 import com.example.spring_study.Repository.ScheduleRepository;
 import com.example.spring_study.Repository.UserRepository;
 import org.junit.jupiter.api.Test;
