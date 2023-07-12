@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
@@ -14,7 +15,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     Schedule findByScheduleId(Long id);
 
     //  특정 사용자 특정 스케줄 가져오기
-    Schedule findByUser_emailAndScheduleId(String email, Long id);
+    Optional<Schedule> findByUser_emailAndScheduleId(String email, Long id);
 
     /** 사용자별 전체 스케줄 가져오기  */
     List<Schedule> findAllByUser_email(String email);

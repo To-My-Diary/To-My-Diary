@@ -1,6 +1,7 @@
 package com.example.spring_study.Service;
 
 import com.example.spring_study.Entity.Schedule;
+import com.example.spring_study.Exception.NotFoundScheduleException;
 import com.example.spring_study.Repository.ScheduleRepository;
 import com.example.spring_study.Dto.ClickDate;
 import lombok.RequiredArgsConstructor;
@@ -45,8 +46,12 @@ public class ScheduleService {
     @Transactional
     @Modifying
     public Schedule modifyAchieve(ScheduleDto scheduleDto) {
-        Schedule schedule = scheduleRepository.findByUser_emailAndScheduleId(scheduleDto.getUserId(), scheduleDto.getScheduleId());
+        // schedule 객체가 있으면 가져오고, 없으면 예외처리
+        Schedule schedule = scheduleRepository.findByUser_emailAndScheduleId(scheduleDto.getUserId(), scheduleDto.getScheduleId())
+                .orElseThrow(() -> new NotFoundScheduleException(String.format("Not Found %d Schedule", scheduleDto.getScheduleId())));
+        // 할 일 달성 여부 변경
         schedule.setAchieve(scheduleDto.getAchieve());
+        // 할 일 달성 여부 변경 저장
         scheduleRepository.save(schedule);
 
         return schedule;
