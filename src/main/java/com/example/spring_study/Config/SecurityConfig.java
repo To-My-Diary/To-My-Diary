@@ -1,6 +1,5 @@
 package com.example.spring_study.Config;
 
-import com.example.spring_study.Converter.GenderEnumConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
