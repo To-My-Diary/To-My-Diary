@@ -20,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     //  Json 객체 생성
-    public Object createJSON(String key, String value){
+    public Object createJSON(String key, Object value){
         JSONObject obj = new JSONObject();
         obj.put(key, value);
         return obj.toString();
@@ -42,7 +42,7 @@ public class UserController {
             bindingResult.getFieldErrors().forEach(error->{
                 jArray.put(createJSON(error.getField(), error.getDefaultMessage()));
             });
-            return jArray.toString();
+            return createJSON("jArray", jArray);
         }else if(joinDto.getPw().equals(joinDto.getConfirmPw())){
             return createJSON("msg", "2개의 패스워드가 일치하지 않습니다.");
         }
