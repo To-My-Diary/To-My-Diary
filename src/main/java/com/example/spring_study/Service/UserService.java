@@ -2,6 +2,8 @@ package com.example.spring_study.Service;
 
 import com.example.spring_study.Dto.JoinDto;
 import com.example.spring_study.Entity.User;
+import com.example.spring_study.Exception.SignUpEmailException;
+import com.example.spring_study.Exception.SignUpTelException;
 import com.example.spring_study.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,7 +16,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     public void create(JoinDto joinDto) {
-        System.out.println(joinDto.getPw());
+        if( !userRepository.findByEmail(joinDto.getEmail()).isEmpty() ){
+            throw new SignUpEmailException("이미 존재하는 Email입니다.");
+        }else if( !userRepository.findByTel(joinDto.getTel()).isEmpty()){
+            throw new SignUpTelException("이미 존재하는 전화번호입니다.");
+        }
         User user = User.builder()
                 .email(joinDto.getEmail())
                 .pw(passwordEncoder.encode(joinDto.getPw()))

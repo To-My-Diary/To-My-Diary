@@ -1,6 +1,8 @@
 package com.example.spring_study.Controller;
 
 import com.example.spring_study.Dto.JoinDto;
+import com.example.spring_study.Exception.SignUpEmailException;
+import com.example.spring_study.Exception.SignUpTelException;
 import com.example.spring_study.Service.UserService;
 import com.fasterxml.jackson.core.JsonParser;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +47,13 @@ public class UserController {
             return createJSON("msg", "2개의 패스워드가 일치하지 않습니다.");
         }
         //  오류가 없다면 생성된 joinDto return
-        userService.create(joinDto);
+        try{
+            userService.create(joinDto);
+        }catch(SignUpEmailException e){
+            return createJSON("msg", e.getMessage());
+        }catch(SignUpTelException e){
+            return createJSON("msg", e.getMessage());
+        }
         return joinDto;
     }
 }
