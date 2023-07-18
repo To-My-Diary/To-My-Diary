@@ -43,7 +43,7 @@ public class UserController {
                 jArray.put(createJSON(error.getField(), error.getDefaultMessage()));
             });
             return createJSON("jArray", jArray);
-        }else if(joinDto.getPw().equals(joinDto.getConfirmPw())){
+        }else if(!joinDto.getPw().equals(joinDto.getConfirmPw())){
             return createJSON("msg", "2개의 패스워드가 일치하지 않습니다.");
         }
         //  오류가 없다면 생성된 joinDto return
