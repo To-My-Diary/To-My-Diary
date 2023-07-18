@@ -1,7 +1,6 @@
 package com.example.spring_study.Entity;
 
 import com.example.spring_study.Enum.AchieveEnum;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
