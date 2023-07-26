@@ -6,6 +6,7 @@ import com.example.spring_study.Repository.ScheduleRepository;
 import com.example.spring_study.Dto.ClickDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
@@ -21,11 +22,11 @@ public class ScheduleService {
 
     // 메인화면 Get 요청 처리
     public List<Schedule> getSchedule() {
-        return scheduleRepository.findAllByUser_emailAndCreateDate("111@naver.com", LocalDate.now());
+        return scheduleRepository.getScheduleOrderByAchieve("111@naver.com");
     }
     // 메인화면 Post 요청 처리
     public List<Schedule> getSchedule(ClickDate date) {
-        return scheduleRepository.findAllByUser_emailAndCreateDate("111@naver.com", LocalDate.of(date.getYear(), date.getMonth(),date.getDay()));
+        return scheduleRepository.getClickDateSchedules("111@naver.com", LocalDate.of(date.getYear(), date.getMonth(),date.getDay()));
     }
 
     /** 할 일 저장 */

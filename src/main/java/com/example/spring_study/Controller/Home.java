@@ -7,17 +7,8 @@ import com.example.spring_study.Service.ScheduleService;
 import com.example.spring_study.Dto.ClickDate;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @RestController  // @ResponseBody 어노테이션 삭제 후 @RestController 어노테이션 추가

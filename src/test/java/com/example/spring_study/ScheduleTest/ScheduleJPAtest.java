@@ -31,7 +31,7 @@ public class ScheduleJPAtest {
             scheduleRepository.save(sch);
         }
         for(int i =0; i < 5; i++){
-            User user = userRepository.findByEmail("222@naver.com").get();
+            User user = userRepository.findByEmail("123@naver.com").get();
             Schedule sch = Schedule.builder()
                     .msg("내용"+i)
                     .achieve(AchieveEnum.doing)
@@ -39,7 +39,7 @@ public class ScheduleJPAtest {
                     .build();
             scheduleRepository.save(sch);
         }for(int i =0; i < 5; i++){
-            User user = userRepository.findByEmail("333@naver.com").get();
+            User user = userRepository.findByEmail("1231@naver.com").get();
             Schedule sch = Schedule.builder()
                     .msg("내용"+i)
                     .achieve(AchieveEnum.doing)
