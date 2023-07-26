@@ -3,9 +3,11 @@ package com.example.spring_study.Repository;
 import com.example.spring_study.Entity.Schedule;
 import com.example.spring_study.Enum.AchieveEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -36,11 +38,11 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     /** 사용자별 날짜별 스케줄을 가져오되 달성별로 내림차순 정렬 */
     List<Schedule> findAllByUser_emailAndCreateDateOrderByAchieveDesc(String email, LocalDate date);
 
-    @Query(value = "select * from schedule where user_email =\"111@naver.com\"\n" +
-            "order by FIELD(achieve ,\"achieve\") desc, create_date", nativeQuery = true)
+    @Query(value = "select s from Schedule as s where user_email =:email " +
+            "order by FIELD(achieve ,'achieve') desc, create_date")
     List<Schedule> getScheduleOrderByAchieve(String email);
 
-    @Query(value = "select * from schedule where user_email =\"111@naver.com\"\n" +
-            "order by FIELD(achieve ,\"achieve\") desc, create_date", nativeQuery = true)
-    List<Schedule> getClickDateSchedules(String s, LocalDate of);
+    @Query(value = "select s from Schedule as s where user_email =:email and create_date=:date " +
+            "order by FIELD(achieve ,'achieve') desc, create_date")
+    List<Schedule> getClickDateSchedules(String email, LocalDate date);
 }
