@@ -1,10 +1,9 @@
 package com.example.spring_study.Controller;
 
-import com.example.spring_study.Dto.JoinDto;
+import com.example.spring_study.DTO.JoinDto;
 import com.example.spring_study.Exception.SignUpEmailException;
 import com.example.spring_study.Exception.SignUpTelException;
 import com.example.spring_study.Service.UserService;
-import com.fasterxml.jackson.core.JsonParser;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;

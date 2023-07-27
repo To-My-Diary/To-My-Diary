@@ -1,6 +1,6 @@
 package com.example.spring_study.Controller;
 
-import com.example.spring_study.Dto.DiaryDto;
+import com.example.spring_study.DTO.DiaryDto;
 import com.example.spring_study.Service.DiaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;

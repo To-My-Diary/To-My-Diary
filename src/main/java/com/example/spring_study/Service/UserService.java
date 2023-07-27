@@ -1,12 +1,11 @@
 package com.example.spring_study.Service;
 
-import com.example.spring_study.Dto.JoinDto;
+import com.example.spring_study.DTO.JoinDto;
 import com.example.spring_study.Entity.User;
 import com.example.spring_study.Exception.SignUpEmailException;
 import com.example.spring_study.Exception.SignUpTelException;
 import com.example.spring_study.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

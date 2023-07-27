@@ -1,14 +1,9 @@
-package com.example.spring_study.Dto;
+package com.example.spring_study.DTO;
 
 import com.example.spring_study.Enum.GenderEnum;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 

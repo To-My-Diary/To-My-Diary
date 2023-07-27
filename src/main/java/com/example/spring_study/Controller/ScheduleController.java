@@ -1,6 +1,6 @@
 package com.example.spring_study.Controller;
 
-import com.example.spring_study.Dto.ScheduleDto;
+import com.example.spring_study.DTO.ScheduleDto;
 import com.example.spring_study.Service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;

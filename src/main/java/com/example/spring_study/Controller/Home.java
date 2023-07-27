@@ -1,10 +1,10 @@
 package com.example.spring_study.Controller;
 
-import com.example.spring_study.Dto.ScheduleDto;
+import com.example.spring_study.DTO.ScheduleDto;
 import com.example.spring_study.Entity.Schedule;
 import com.example.spring_study.Exception.NotFoundScheduleException;
 import com.example.spring_study.Service.ScheduleService;
-import com.example.spring_study.Dto.ClickDate;
+import com.example.spring_study.DTO.ClickDate;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
