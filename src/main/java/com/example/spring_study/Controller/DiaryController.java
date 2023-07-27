@@ -21,14 +21,15 @@ public class DiaryController {
 
     //일기 하나씩 상세조회 하는 api
 
-   // @PostMapping("/show/diary")
+    // @PostMapping("/show/diary")
     //public void showDiary(@RequestBody DiaryDto diaryDto) {
-      //  DiaryService.showDiary(diaryDto);
-   // }
+    //  DiaryService.showDiary(diaryDto);
+    // }
 
     @GetMapping("/show/diary")
     public DiaryDto searchById(@PathVariable Long id) {
         diaryService.searchById(id);
+        return null;
     }
 
 
@@ -43,6 +44,7 @@ public class DiaryController {
     @GetMapping("/wholeview/diary")
     public List<DiaryDto> searchAllDesc() {
         diaryService.searchAllDesc();
+        return null;
     }
 
 
