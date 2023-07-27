@@ -17,6 +17,7 @@ public class ScheduleController {
     /** 할 일 저장 */
     @PostMapping("/save/schedule")
     public void saveDiary(@RequestBody ScheduleDto scheduleDto) {
+
         scheduleService.saveSchedule(scheduleDto);
     }
     

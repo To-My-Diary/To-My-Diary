@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class DiaryService {
@@ -15,6 +17,14 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final UserRepository userRepository;
 
+    public Diary searchById(Long id){ //데이터 검색
+        return diaryRepository.findByDiaryId(id);
+        //return DiaryRepository.findByDiaryId(id).orElseThrow(ExceptionBoard.NOT_FOUND_POST::getException).counting();
+    }
+
+    public List<Diary> searchAllDesc() { //모든 데이터 검색
+        return diaryRepository.findAll();
+    }
     /** 일기 저장 */
     public void saveDiary(DiaryDto diaryDto) {
         diaryRepository.save(dtoToEntity(diaryDto));

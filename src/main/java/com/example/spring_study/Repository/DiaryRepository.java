@@ -13,12 +13,12 @@ import java.util.List;
 @Repository
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
+    List<Diary> findAllByEmotion(EmotionEnum emotion); //emotion이라는 기분으로 불러온것
+
     /** 기본키로 일기 찾기 */
     Diary findByDiaryId(Long id);
-
-    List<Diary> findByUser(User user);
-
-    List<Diary> findAllByEmotion(EmotionEnum emotion); //achieve라는 기분으로 불러온것
+//
+//    List<Diary> findAllDescBy();
 
     List<Diary> findAllByCreateDate(LocalDate local); //날짜로 불러오기 위해서
 

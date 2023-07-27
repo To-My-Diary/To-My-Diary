@@ -1,5 +1,4 @@
 package com.example.spring_study.DTO;
-
 import com.example.spring_study.Enum.EmotionEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
