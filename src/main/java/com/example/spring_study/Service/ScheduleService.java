@@ -1,5 +1,6 @@
 package com.example.spring_study.Service;
 
+import com.example.spring_study.DTO.ScheduleDto;
 import com.example.spring_study.Entity.Schedule;
 import com.example.spring_study.Exception.NotFoundScheduleException;
 import com.example.spring_study.Repository.ScheduleRepository;
@@ -9,7 +10,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
-import com.example.spring_study.DTO.ScheduleDto;
 import com.example.spring_study.Repository.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,6 +1,7 @@
 package com.example.spring_study.Repository;
 
 import com.example.spring_study.Entity.DetailGoal;
+import com.example.spring_study.Entity.Goal;
 import com.example.spring_study.Enum.AchieveEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
