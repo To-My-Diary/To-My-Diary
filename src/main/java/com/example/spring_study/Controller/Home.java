@@ -3,13 +3,11 @@ package com.example.spring_study.Controller;
 import com.example.spring_study.Entity.Schedule;
 import com.example.spring_study.Service.ScheduleService;
 import com.example.spring_study.DTO.ClickDate;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller

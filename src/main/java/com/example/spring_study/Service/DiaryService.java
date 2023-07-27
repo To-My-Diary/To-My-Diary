@@ -1,7 +1,7 @@
 package com.example.spring_study.Service;
 
 
-import com.example.spring_study.Dto.DiaryDto;
+import com.example.spring_study.DTO.DiaryDto;
 import com.example.spring_study.Entity.Diary;
 import com.example.spring_study.Repository.DiaryRepository;
 import com.example.spring_study.Repository.UserRepository;
@@ -24,7 +24,7 @@ public class DiaryService {
     }
 
     public List<Diary> searchAllDesc() { //모든 데이터 검색
-        return diaryRepository.findAllDesc();
+        return diaryRepository.findAll();
     }
     /** 일기 저장 */
     public void saveDiary(DiaryDto diaryDto) {

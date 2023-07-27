@@ -1,6 +1,6 @@
 package com.example.spring_study.Controller;
 
-import com.example.spring_study.Dto.ScheduleDto;
+import com.example.spring_study.DTO.ScheduleDto;
 import com.example.spring_study.Service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +17,7 @@ public class ScheduleController {
     /** 할 일 저장 */
     @PostMapping("/save/schedule")
     public void saveDiary(@RequestBody ScheduleDto scheduleDto) {
+
         scheduleService.saveSchedule(scheduleDto);
     }
     
