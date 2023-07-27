@@ -18,8 +18,8 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
     List<Diary> findByUser(User user);
 
-    List<Diary> findAllByEmotion(EmotionEnum emotion); //achieve라는 기분으로 불러온것
+    List<Diary> findAllByEmotion(EmotionEnum emotion); // achieve라는 기분으로 불러온것
 
-    List<Diary> findAllByCreateDate(LocalDate local); //날짜로 불러오기 위해서
+    List<Diary> findAllByCreateDate(LocalDate local); // 날짜로 불러오기 위해서
 
 }
