@@ -5,9 +5,13 @@ import com.example.spring_study.Entity.Diary;
 import com.example.spring_study.Repository.DiaryRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -15,27 +19,29 @@ public class DiaryService {
     private final DiaryRepository DiaryRepository;
 
 
+
     public Diary searchById(Long id){ //데이터 검색
-        return DiaryRepository.findById(id).orElseThrow(ExceptionBoard.NOT_FOUND_POST::getException).counting();
+        return DiaryRepository.findByDiaryId(id);
+        //return DiaryRepository.findByDiaryId(id).orElseThrow(ExceptionBoard.NOT_FOUND_POST::getException).counting();
     }
 
-    public List<Diary> searchAll() { //모든 데이터 검색
-        return this.DiaryRepository.findAll();
+    public List<Diary> searchAllDesc() { //모든 데이터 검색
+        return DiaryRepository.findAllDesc();
     }
 
     //id를 받고 request로받은 값으로 변경
 
-    public void updateById(Long id){ //데이터 수정
-        this.DiaryRepository.updateById(id);
-    }
+    //public void updateById(Long id){ //데이터 수정
+      //  this.DiaryRepository.updateById(id);
+    //}
 
-    public void deleteById(Long id){ //데이터 삭제
-        this.DiaryRepository.deleteById(id);
-    }
+    //public void deleteById(Long id){ //데이터 삭제
+      //  this.DiaryRepository.deleteById(id);
+    //}
 
-    public void deleteAll(){ //모든 데이터 삭제
-        this.DiaryRepository.deleteAll();
-    }
+    //public void deleteAll(){ //모든 데이터 삭제
+      //  this.DiaryRepository.deleteAll();
+    //}
 }
 
 =======

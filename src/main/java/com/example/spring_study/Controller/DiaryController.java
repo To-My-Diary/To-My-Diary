@@ -7,21 +7,17 @@ import com.example.spring_study.Dto.DiaryDto;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
-
-
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
+@RestController
 @Controller
 public class DiaryController {
-
-    private final DiaryService diaryService;
+    private DiaryService diaryService;
 
     //일기 하나씩 상세조회 하는 api
 
@@ -32,7 +28,7 @@ public class DiaryController {
 
     @GetMapping("/show/diary")
     public DiaryDto searchById(@PathVariable Long id) {
-        return DiaryService.searchById(id);
+        diaryService.searchById(id);
     }
 
 
@@ -46,7 +42,7 @@ public class DiaryController {
     //전체 조회(목록)
     @GetMapping("/wholeview/diary")
     public List<DiaryDto> searchAllDesc() {
-        return DiaryService.searchAllDesc();
+        diaryService.searchAllDesc();
     }
 
 
