@@ -1,6 +1,7 @@
 package com.example.spring_study.Controller;
 
 import com.example.spring_study.DTO.DiaryDto;
+import com.example.spring_study.Entity.Diary;
 import com.example.spring_study.Entity.Image;
 import com.example.spring_study.Service.DiaryService;
 import com.example.spring_study.Service.FileService;

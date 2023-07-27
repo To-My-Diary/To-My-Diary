@@ -21,7 +21,7 @@ public class Diary extends BaseEntity{
     private String subject; // 제목
 
     @NotNull
-    private String img;
+    private String img; // 이미지
 
     @Column(columnDefinition = "TEXT", nullable = false, length = 32767)
     private String content; // 내용
