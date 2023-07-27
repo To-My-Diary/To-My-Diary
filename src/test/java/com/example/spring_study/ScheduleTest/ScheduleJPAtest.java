@@ -3,6 +3,7 @@ package com.example.spring_study.ScheduleTest;
 import com.example.spring_study.Entity.Schedule;
 import com.example.spring_study.Entity.User;
 import com.example.spring_study.Enum.AchieveEnum;
+import com.example.spring_study.Enum.GenderEnum;
 import com.example.spring_study.Repository.ScheduleRepository;
 import com.example.spring_study.Repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ public class ScheduleJPAtest {
             scheduleRepository.save(sch);
         }
         for(int i =0; i < 5; i++){
-            User user = userRepository.findByEmail("222@naver.com").get();
+            User user = userRepository.findByEmail("123@naver.com").get();
             Schedule sch = Schedule.builder()
                     .msg("내용"+i)
                     .achieve(AchieveEnum.doing)
@@ -38,7 +39,7 @@ public class ScheduleJPAtest {
                     .build();
             scheduleRepository.save(sch);
         }for(int i =0; i < 5; i++){
-            User user = userRepository.findByEmail("333@naver.com").get();
+            User user = userRepository.findByEmail("1231@naver.com").get();
             Schedule sch = Schedule.builder()
                     .msg("내용"+i)
                     .achieve(AchieveEnum.doing)

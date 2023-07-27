@@ -5,6 +5,7 @@ import com.example.spring_study.Enum.GenderEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,4 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAll();  // 모든 User 조회 (생략 가능)
 
     List<User> findByGender(GenderEnum Type);  // Gender값으로 User 조회
+
+    Optional<User> findByTel(String tel);
 }

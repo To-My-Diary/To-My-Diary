@@ -14,7 +14,7 @@ import java.util.List;
 @Builder // 빌더 어노테이션 위치 수정
 public class User {
     @Id
-    @Column(length=50, nullable = false)
+    @Column(length=50)
     private String email;
     @Column(nullable = false)
     private String pw;

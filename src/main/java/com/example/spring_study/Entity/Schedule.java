@@ -2,10 +2,7 @@ package com.example.spring_study.Entity;
 
 import com.example.spring_study.Enum.AchieveEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -26,6 +23,7 @@ public class Schedule extends BaseEntity {
 
     @Column(length = 20)
     @Enumerated(EnumType.STRING)
+    @Setter
     private AchieveEnum achieve; // 달성 여부
 
     private LocalDateTime planDate; // 목표 날짜
