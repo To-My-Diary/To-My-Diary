@@ -1,9 +1,11 @@
 package com.example.spring_study.Service;
 
 import com.example.spring_study.Entity.Schedule;
+import com.example.spring_study.Exception.NotFoundScheduleException;
 import com.example.spring_study.Repository.ScheduleRepository;
 import com.example.spring_study.DTO.ClickDate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
@@ -17,14 +19,13 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
 
+    // 메인화면 Get 요청 처리
     public List<Schedule> getSchedule() {
-        System.out.println("실행1");
-        return scheduleRepository.findAllByUser_emailAndCreateDate("111@naver.com", LocalDate.now());
+        return scheduleRepository.getScheduleOrderByAchieve("111@naver.com");
     }
-
+    // 메인화면 Post 요청 처리
     public List<Schedule> getSchedule(ClickDate date) {
-        System.out.println("실행2");
-        return scheduleRepository.findAllByUser_emailAndCreateDate("111@naver.com", LocalDate.of(date.getYear(), date.getMonth(),date.getDay()));
+        return scheduleRepository.getClickDateSchedules("111@naver.com", LocalDate.of(date.getYear(), date.getMonth(),date.getDay()));
     }
 
     /** 할 일 저장 */
@@ -40,7 +41,22 @@ public class ScheduleService {
         schedule.update(scheduleDto.getMsg(), scheduleDto.getAchieve());
         System.out.println("[" + scheduleDto.getMsg() + "] 할 일을 수정했습니다.");
     }
-    
+
+    //  달성 여부 수정
+    @Transactional
+    @Modifying
+    public Schedule modifyAchieve(ScheduleDto scheduleDto) {
+        // schedule 객체가 있으면 가져오고, 없으면 예외처리
+        Schedule schedule = scheduleRepository.findByUser_emailAndScheduleId(scheduleDto.getUserId(), scheduleDto.getScheduleId())
+                .orElseThrow(() -> new NotFoundScheduleException(String.format("Not Found %d Schedule", scheduleDto.getScheduleId())));
+        // 할 일 달성 여부 변경
+        schedule.setAchieve(scheduleDto.getAchieve());
+        // 할 일 달성 여부 변경 저장
+        scheduleRepository.save(schedule);
+
+        return schedule;
+    }
+
     /** 할 일 삭제 */
     public void deleteSchedule(Long scheduleId) {
         scheduleRepository.deleteById(scheduleId);

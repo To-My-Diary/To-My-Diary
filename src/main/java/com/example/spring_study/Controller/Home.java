@@ -1,33 +1,48 @@
 package com.example.spring_study.Controller;
 
+import com.example.spring_study.DTO.ScheduleDto;
 import com.example.spring_study.Entity.Schedule;
+import com.example.spring_study.Exception.NotFoundScheduleException;
 import com.example.spring_study.Service.ScheduleService;
 import com.example.spring_study.DTO.ClickDate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController  // @ResponseBody 어노테이션 삭제 후 @RestController 어노테이션 추가
 @RequiredArgsConstructor
 public class Home {
     private final ScheduleService scheduleService;
-    @GetMapping(value = "/index")
-    public String index(Model model){
-        List<Schedule> scheduleList=  scheduleService.getSchedule();
-        model.addAttribute("scheduleList", scheduleList);
-        return "index";
+
+    public Object createMsgJSON(String msg){
+        JSONObject obj = new JSONObject();
+        obj.put("msg", msg);
+        return obj.toString();
     }
-    @PostMapping(value = "/index")
-    @ResponseBody
-    public Object index(@RequestBody ClickDate clickDate){
-        System.out.println(String.format("%s년%s월%s일", clickDate.getYear(), clickDate.getMonth(),clickDate.getDay()));
-        List<Schedule> scheduleList=  scheduleService.getSchedule(clickDate);
-        scheduleList.stream()
-                .map(e -> e.getCreateDate())
-                .forEach(System.out::println);
+    // 메인화면 (GET) - request : 없음
+    @GetMapping(value = "/index")
+    public Object index_Get(){
+        List<Schedule> scheduleList=  scheduleService.getSchedule();
         return scheduleList;
+    }
+
+    // 메인화면 (POST) - request : ClickDate 필드
+    @PostMapping(value = "/index")
+    public Object index_Post(@RequestBody ClickDate clickDate){
+        List<Schedule> scheduleList=  scheduleService.getSchedule(clickDate);
+        return scheduleList;
+    }
+
+    @PostMapping(value = "/index/modify_scheduleAchieve")
+    public Object modifyScheduleAchieve(@RequestBody ScheduleDto scheduleDto){
+        Schedule schedule = null;
+        try{
+            schedule = scheduleService.modifyAchieve(scheduleDto);
+        }catch (NotFoundScheduleException e){
+            return createMsgJSON(String.format("Not Found %d Schedule", scheduleDto.getScheduleId()));
+        }
+        return schedule;
     }
 }
