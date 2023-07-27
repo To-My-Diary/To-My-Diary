@@ -15,4 +15,13 @@ public class DiaryDto {
     private String userId;
     private EmotionEnum emotion;
     private String img;
+
+    public DiaryDto(Object diaryId, Object subject, Object content, Object userId, Object emotion, Object img) {
+        this.diaryId = (Long) diaryId;
+        this.subject = (String) subject;
+        this.content = (String) content;
+        this.userId = (String) userId;
+        this.emotion = (EmotionEnum) emotion;
+        this.img = (String) img;
+    }
 }

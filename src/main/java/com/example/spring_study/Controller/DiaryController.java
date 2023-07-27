@@ -1,69 +1,31 @@
 package com.example.spring_study.Controller;
 
-<<<<<<< HEAD
-
-import com.example.spring_study.Service.DiaryService;
 import com.example.spring_study.Dto.DiaryDto;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.example.spring_study.Entity.Diary;
+import com.example.spring_study.Service.DiaryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-
-@RequiredArgsConstructor
-@RestController
-@Controller
-public class DiaryController {
-    private DiaryService diaryService;
-
-    //일기 하나씩 상세조회 하는 api
-
-    // @PostMapping("/show/diary")
-    //public void showDiary(@RequestBody DiaryDto diaryDto) {
-    //  DiaryService.showDiary(diaryDto);
-    // }
-
-    @GetMapping("/show/diary")
-    public DiaryDto searchById(@PathVariable Long id) {
-        diaryService.searchById(id);
-        return null;
-    }
-
-
-
-    //일기 전체를 조회하는 api (목록 조회)
-    //@PostMapping("/wholeview/diary")
-    //public void wholeviewDiary(@RequestBody DiaryDto diaryDto) {
-       // DiaryService.wholeviewDiary(diaryDto);
-    //}
-
-    //전체 조회(목록)
-    @GetMapping("/wholeview/diary")
-    public List<DiaryDto> searchAllDesc() {
-        diaryService.searchAllDesc();
-        return null;
-    }
-
-
-}
-
-=======
-import com.example.spring_study.Dto.DiaryDto;
-import com.example.spring_study.Service.DiaryService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
 public class DiaryController {
 
     private final DiaryService diaryService;
+
+
+    @GetMapping("/show/diary")
+    public Diary searchById(@PathVariable Long id) {
+        return diaryService.searchById(id);
+    }
+
+
+    //전체 조회(목록)
+    @GetMapping("/wholeview/diary")
+    public List<Diary> searchAllDesc() {
+        return diaryService.searchAllDesc();
+    }
 
     /** 일기 저장 */
     @PostMapping("/save/diary")
@@ -84,4 +46,4 @@ public class DiaryController {
     }
 
 }
->>>>>>> 0a81bde3af1f8cfa49573f73f155e61cf4b7cc00
+
