@@ -24,8 +24,15 @@ public class GoalService {
 
     /** 목표 & 세부 목표 설정하기 */
     public void createGoal(GoalDto goalDto) {
+        // 목표 저장
         Goal goal = dtoToEntity(goalDto);
-        goalRepository.save(goal);
+        long goalId = goalRepository.save(goal).getGoalId();
+        // 세부 목표 저장
+        List<DetailGoal> detailGoals = dtoToEntity(goalDto.getDetailGoals());
+        for (DetailGoal detailGoal : detailGoals) {
+            detailGoal.setGoal(goalRepository.findById(goalId).get());
+            detailGoalRepository.save(detailGoal);
+        }
     }
 
     /** 한 달 메인 목표 모아 보여주기 */
@@ -61,24 +68,23 @@ public class GoalService {
     }
 
     /** DetailGoalDto -> DetailGoal Entity */
-    DetailGoal dtoToEntity(DetailGoalDto dto){
-        DetailGoal detailGoal = DetailGoal.builder()
+    List<DetailGoal> dtoToEntity(List<DetailGoalDto> dto){
+        // dtoList -> entityList
+        List<DetailGoal> detailGoalList = new ArrayList<>();
+        for (DetailGoalDto detailGoalDto : dto) {
+            DetailGoal detailGoal = DetailGoal.builder()
 //                .detailGoalId(dto.getDetailGoalId())
 //                .goal(goalRepository.findById(goalId).get())
-                .content(dto.getContent())
-                .achieve(dto.getAchieve())
-                .planDate(dto.getPlanDate()).build();
-        return detailGoal;
+                    .content(detailGoalDto.getContent())
+                    .achieve(detailGoalDto.getAchieve())
+                    .planDate(detailGoalDto.getPlanDate()).build();
+            detailGoalList.add(detailGoal);
+        }
+        return detailGoalList;
     }
 
     /** GoalDto -> Goal Entity */
     Goal dtoToEntity(GoalDto dto) {
-        // dtoList -> entityList
-        List<DetailGoal> detailGoalList = new ArrayList<>();
-        for (DetailGoalDto detailGoalDto : dto.getDetailGoals()) {
-            detailGoalList.add(dtoToEntity(detailGoalDto));
-        }
-
         Goal goal = Goal.builder()
 //                .goalId(dto.getGoalId())
                 .content(dto.getContent())
@@ -87,7 +93,7 @@ public class GoalService {
                 .color(dto.getColor())
                 .planDate(dto.getPlanDate())
                 .user(userRepository.findByEmail(dto.getUserId()).get())
-                .detailGoals(detailGoalList)
+//                .detailGoals(detailGoalList)
                 .build();
         return goal;
     }
