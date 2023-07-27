@@ -1,6 +1,6 @@
 package com.example.spring_study.Service;
 
-import com.example.spring_study.Dto.DiaryDto;
+import com.example.spring_study.DTO.DiaryDto;
 import com.example.spring_study.Entity.Diary;
 import com.example.spring_study.Repository.DiaryRepository;
 import com.example.spring_study.Repository.UserRepository;

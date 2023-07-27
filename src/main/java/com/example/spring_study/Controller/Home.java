@@ -1,10 +1,12 @@
 package com.example.spring_study.Controller;
 
-import com.example.spring_study.Dto.ScheduleDto;
+import com.example.spring_study.DTO.ScheduleDto;
 import com.example.spring_study.Entity.Schedule;
+import com.example.spring_study.Exception.NotFoundScheduleException;
 import com.example.spring_study.Service.ScheduleService;
-import com.example.spring_study.Dto.ClickDate;
+import com.example.spring_study.DTO.ClickDate;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +16,11 @@ import java.util.List;
 public class Home {
     private final ScheduleService scheduleService;
 
+    public Object createMsgJSON(String msg){
+        JSONObject obj = new JSONObject();
+        obj.put("msg", msg);
+        return obj.toString();
+    }
     // 메인화면 (GET) - request : 없음
     @GetMapping(value = "/index")
     public Object index_Get(){
@@ -30,7 +37,12 @@ public class Home {
 
     @PostMapping(value = "/index/modify_scheduleAchieve")
     public Object modifyScheduleAchieve(@RequestBody ScheduleDto scheduleDto){
-        Schedule schedule = scheduleService.modifyAchieve(scheduleDto);
+        Schedule schedule = null;
+        try{
+            schedule = scheduleService.modifyAchieve(scheduleDto);
+        }catch (NotFoundScheduleException e){
+            return createMsgJSON(String.format("Not Found %d Schedule", scheduleDto.getScheduleId()));
+        }
         return schedule;
     }
 }
