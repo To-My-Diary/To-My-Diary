@@ -26,7 +26,7 @@ public class DiaryController {
     private final DiaryService diaryService;
     private final FileService fileService;
 
-    @GetMapping("/show/diary")
+    @GetMapping("/show/diary/{id}")
     public Diary searchById(@PathVariable Long id) {
         return diaryService.searchById(id);
     }
