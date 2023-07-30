@@ -46,6 +46,11 @@ dependencies {
     // Swagger 의존성
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+    // JWT 기능을 위한 jjwt 라이브러리 ( Spring Security 기반의 애플리케이션에 JWT 적용하기 위해 )
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly	'io.jsonwebtoken:jjwt-jackson:0.11.5'
 }
 
 tasks.named('test') {
