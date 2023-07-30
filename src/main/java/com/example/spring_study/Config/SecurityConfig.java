@@ -27,8 +27,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
 
-    @Value("${Jwt.secretKey}")
-    private static String secretKey;
+    @Value("${jwt.secretKey}")
+    private String secretKey;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 // JwtAuthenticationFilter를 UsernamePasswordAuthentocationFilter 전에 넣는다.
-                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider, secretKey), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/index**").authenticated()
                 .anyRequest().permitAll();

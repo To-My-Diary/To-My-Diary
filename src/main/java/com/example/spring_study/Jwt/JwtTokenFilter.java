@@ -20,7 +20,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
-    private final String secretKey;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -41,13 +40,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         String token = authorizationHeader.split(" ")[1];
 
         // 전송받은 Jwt Token이 만료되었다면 -> 다음필터 진행 (인증 x)
-        if(JwtTokenProvider.isExpired(token, secretKey)){
+        if(jwtTokenProvider.isExpired(token)){
             filterChain.doFilter(request, response);
             return;
         }
 
         // Jwt Token에서 user_email 가져오기
-        String user_email = JwtTokenProvider.getUserEmail(token, secretKey);
+        String user_email = jwtTokenProvider.getUserEmail(token);
 
         // 가져온 user_email로 User 가져오기
         User loginUser = jwtTokenProvider.getUserByEmail(user_email);

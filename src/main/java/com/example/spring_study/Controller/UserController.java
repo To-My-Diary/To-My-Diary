@@ -23,6 +23,8 @@ import javax.validation.Valid;
 public class UserController {
     private final UserService userService;
 
+    private final JwtTokenProvider jwtTokenProvider;
+
     //  Json 객체 생성
     public Object createJSON(String key, Object value){
         JSONObject obj = new JSONObject();
@@ -60,12 +62,16 @@ public class UserController {
         }
         return joinDto;
     }
+
+    // 로그인 페이지 이동 메소드
     @GetMapping(value="/loginForm")
     public String login(){ return "loginForm";}
 
+
+    // 로그인 실행 메소드
     @PostMapping(value = "/login")
     @ResponseBody
-    public Object doLogin(@RequestBody LoginDto loginDto){
+    public Object doLogin(LoginDto loginDto){
         User user = null;
         try{
             user = userService.login(loginDto);
@@ -75,9 +81,7 @@ public class UserController {
             return createJSON("msg", e.getMessage());
         }
 
-        String secretKey  = "to-do-mydiary";
-        long expireTimeMs = 1000*10;
-        String jwtToken = JwtTokenProvider.createToken(user.getEmail(), secretKey, expireTimeMs);
+        String jwtToken = jwtTokenProvider.createToken(user.getEmail());
 
         return jwtToken;
     }

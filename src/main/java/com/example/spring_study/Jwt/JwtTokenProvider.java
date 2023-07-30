@@ -8,6 +8,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -18,9 +19,12 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private final UserService userService;
+    @Value("${jwt.secretKey}")
+    private String secretkey;
+    private static long expireTimeMs = 1000 * 10;
 
     // Jwt 토큰 생성
-    public static String createToken(String user_email, String key, long expireTimeMs){
+    public String createToken(String user_email){
         // Claim = Jwt Token에 들어갈 정보
         Claims claims = Jwts.claims();
         // Claim에 user_email을 넣어 줌으로써 나중에 user_email을 꺼낼 수 있음
@@ -30,25 +34,25 @@ public class JwtTokenProvider {
                 .setClaims(claims)  // 정보 저장
                 .setIssuedAt(new Date(System.currentTimeMillis()))  // 토큰 발행 시간 정보
                 .setExpiration(new Date(System.currentTimeMillis() + expireTimeMs))  // 토큰 유효시간
-                .signWith(SignatureAlgorithm.HS256, key)  // 사용할 암호화 알고리즘과 signature에 들어갈 secret값
+                .signWith(SignatureAlgorithm.HS256, secretkey)  // 사용할 암호화 알고리즘과 signature에 들어갈 secret값
                 .compact();  // si
     }
 
     // Claims에서 user_email 꺼내기
-    public static String getUserEmail(String token, String secretKey){
-        return extractClaims(token, secretKey).get("user_email").toString();
+    public String getUserEmail(String token){
+        return extractClaims(token, secretkey).get("user_email").toString();
     }
 
     // 발급된 Token이 만료 시간이 지났는지 체크
-    public static boolean isExpired(String token, String secretKey){
-        Date expiredDate = extractClaims(token, secretKey).getExpiration();
+    public boolean isExpired(String token){
+        Date expiredDate = extractClaims(token, secretkey).getExpiration();
         // Token 의 만료날까지 지금보다 이전인지 check
         return expiredDate.before(new Date());
     }
 
     // SecretKey를 통해서 Token Parsing
-    public static Claims extractClaims(String token, String secretKey){
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+    public static Claims extractClaims(String token,String secretkey){
+        return Jwts.parser().setSigningKey(secretkey).parseClaimsJws(token).getBody();
     }
 
     public User getUserByEmail(String user_email) {
