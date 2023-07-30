@@ -1,10 +1,14 @@
 package com.example.spring_study.Controller;
 
 import com.example.spring_study.DTO.JoinDto;
+import com.example.spring_study.DTO.LoginDto;
+import com.example.spring_study.Entity.User;
 import com.example.spring_study.Exception.SignUpEmailException;
 import com.example.spring_study.Exception.SignUpTelException;
+import com.example.spring_study.Jwt.JwtTokenProvider;
 import com.example.spring_study.Service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -57,4 +61,16 @@ public class UserController {
     }
     @GetMapping(value="/loginForm")
     public String login(){ return "loginForm";}
+
+    @PostMapping(value = "/login")
+    @ResponseBody
+    public String doLogin(@RequestBody LoginDto loginDto){
+        User user = userService.login(loginDto);
+
+        String secretKey  = "to-do-mydiary";
+        long expireTimeMs = 1000*10;
+        String jwtToken = JwtTokenProvider.createToken(user.getEmail(), secretKey, expireTimeMs);
+
+        return jwtToken;
+    }
 }

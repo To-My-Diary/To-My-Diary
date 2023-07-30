@@ -1,26 +1,23 @@
 package com.example.spring_study.Jwt;
 
+import com.example.spring_study.Entity.User;
+import com.example.spring_study.Service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 
 // Custom Provider 생성
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
+
+    private final UserService userService;
 
     // Jwt 토큰 생성
     public static String createToken(String user_email, String key, long expireTimeMs){
@@ -52,5 +49,9 @@ public class JwtTokenProvider {
     // SecretKey를 통해서 Token Parsing
     public static Claims extractClaims(String token, String secretKey){
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+    }
+
+    public User getUserByEmail(String user_email) {
+        return userService.getUserByEmail(user_email);
     }
 }
