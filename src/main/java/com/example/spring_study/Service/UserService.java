@@ -43,7 +43,7 @@ public class UserService {
         );
 
         if(!passwordEncoder.matches(loginDto.getPw(), user.getPw())){
-            new IncorrectPasswordException("비밀번호가 올바르지 않습니다. 다시 입력해주세요.");
+            throw new IncorrectPasswordException("비밀번호가 올바르지 않습니다. 다시 입력해주세요.");
         }
         return user;
     }
