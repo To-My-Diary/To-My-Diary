@@ -55,6 +55,6 @@ public class UserController {
         }
         return joinDto;
     }
-    @GetMapping(value="/login")
-    public String login(){ return "login";}
+    @GetMapping(value="/loginForm")
+    public String login(){ return "loginForm";}
 }
