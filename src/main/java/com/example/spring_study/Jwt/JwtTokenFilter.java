@@ -17,6 +17,8 @@ import java.io.IOException;
 
 
 // OncePerRequestFilter : 매번 들어갈 때 마다 체크 해주는 필터
+// 해당 클래스는 Spring Security의 환경설정을 구성하는 단계에서 필터로 등록한 클래스이다.
+// 지정한 URL별 JWT유효성 검증을 수행하며 직접적인 사용자 '인증'은 확인한다.
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
@@ -45,10 +47,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Jwt Token에서 user_email 가져오기
+        // Jwt Token에서 user_email (사용자 입력값) 가져오기
         String user_email = jwtTokenProvider.getUserEmail(token);
 
-        // 가져온 user_email로 User 가져오기
+        // 가져온 user_email로 User (DB에 저장된 값)가져오기
         User loginUser = jwtTokenProvider.getUserByEmail(user_email);
 
         // loginUser 정보로 UsernamePasswordAuthentocationToken 발급

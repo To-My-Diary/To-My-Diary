@@ -14,10 +14,11 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 // Custom Provider 생성
+// 해당 클래스는 JWT에서 사용되는 토큰 관련 유틸들을 관리하는 클래스입니다.
+//JWT를 생성하거나 유효성을 체크하는 등의 전반적으로 처리되는기능들을 모아둔 클래스입니다.class
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
-
     private final UserService userService;
     @Value("${jwt.secretKey}")
     private String secretkey;
@@ -54,7 +55,7 @@ public class JwtTokenProvider {
     public static Claims extractClaims(String token,String secretkey){
         return Jwts.parser().setSigningKey(secretkey).parseClaimsJws(token).getBody();
     }
-
+    // Repository에서 user_email꺼내기
     public User getUserByEmail(String user_email) {
         return userService.getUserByEmail(user_email);
     }
