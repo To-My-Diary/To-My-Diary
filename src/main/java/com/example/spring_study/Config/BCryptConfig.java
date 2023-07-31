@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class BCryptConfig {
     //  회원가입 시, 비밀번호 암호화
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 }

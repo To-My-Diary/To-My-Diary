@@ -105,4 +105,9 @@ class JwyTests {
                 .map(e -> e.getAchieve())
                 .forEach(System.out::println);
     }
+    @Test
+    void test6(){
+        User user = userRepository.findByEmail("1").get();
+        System.out.println(user.getPw());
+    }
 }

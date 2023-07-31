@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -20,12 +21,12 @@ import java.io.IOException;
 // 해당 클래스는 Spring Security의 환경설정을 구성하는 단계에서 필터로 등록한 클래스이다.
 // 지정한 URL별 JWT유효성 검증을 수행하며 직접적인 사용자 '인증'은 확인한다.
 @RequiredArgsConstructor
+@Component
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-
         // Header의 Authorization의 값이 비어있다면 -> Jwt Token을 전송하지 않는다 -> 로그인 안함
         if(authorizationHeader == null){
             filterChain.doFilter(request,response);

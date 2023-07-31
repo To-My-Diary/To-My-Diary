@@ -9,6 +9,7 @@ import com.example.spring_study.Exception.SignUpEmailException;
 import com.example.spring_study.Exception.SignUpTelException;
 import com.example.spring_study.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     public void create(JoinDto joinDto) {
         if( !userRepository.findByEmail(joinDto.getEmail()).isEmpty() ){
             throw new SignUpEmailException("이미 존재하는 Email입니다.");
@@ -25,7 +26,7 @@ public class UserService {
         }
         User user = User.builder()
                 .email(joinDto.getEmail())
-                .pw(passwordEncoder.encode(joinDto.getPw()))
+                .pw(bCryptPasswordEncoder.encode(joinDto.getPw()))
                 .name(joinDto.getName())
                 .tel(joinDto.getTel())
                 .gender(joinDto.getGender())
@@ -42,7 +43,7 @@ public class UserService {
                 () -> new NotFoundUserException(String.format("%s 이메일은 존재하지 않는 이메일입니다.", loginDto.getEmail()))
         );
 
-        if(!passwordEncoder.matches(loginDto.getPw(), user.getPw())){
+        if(!bCryptPasswordEncoder.matches(loginDto.getPw(), user.getPw())){
             throw new IncorrectPasswordException("비밀번호가 올바르지 않습니다. 다시 입력해주세요.");
         }
         return user;

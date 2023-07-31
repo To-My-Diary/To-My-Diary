@@ -83,7 +83,7 @@ public class UserController {
         }catch(IncorrectPasswordException e){
             return createJSON("msg", e.getMessage());
         }
-
+        System.out.println("실행");
         String jwtToken = jwtTokenProvider.createToken(loginDto);
 
         return jwtToken;

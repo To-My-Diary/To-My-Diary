@@ -25,7 +25,7 @@ import java.util.Map;
 public class JwtTokenProvider {
     private final UserService userService;
     @Value("${jwt.secretKey}")
-    private static String secretkey;
+    private String secretkey;
 
     private static long expireTimeMs = 1000 * 10;
 
@@ -41,7 +41,7 @@ public class JwtTokenProvider {
     }
 
     // 1. Header값 생성해주는 메소드
-    private static Map<String, Object> createHeader(){
+    private Map<String, Object> createHeader(){
         Map<String, Object> header = new HashMap<>();
         header.put("typ", "JWT");
         header.put("alg", "HS256");
@@ -59,7 +59,7 @@ public class JwtTokenProvider {
     }
 
     // 3. JWT 서명 발급해주는 메소드
-    private static Key createSignature() {
+    private Key createSignature() {
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(secretkey);
         return new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS256.getJcaName());
     }
