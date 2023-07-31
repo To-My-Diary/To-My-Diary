@@ -1,17 +1,21 @@
 package com.example.spring_study.Jwt;
 
+import com.example.spring_study.DTO.LoginDto;
 import com.example.spring_study.Entity.User;
 import com.example.spring_study.Service.UserService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
+import java.security.Key;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 // Custom Provider 생성
 // 해당 클래스는 JWT에서 사용되는 토큰 관련 유틸들을 관리하는 클래스입니다.
@@ -21,22 +25,50 @@ import java.util.Date;
 public class JwtTokenProvider {
     private final UserService userService;
     @Value("${jwt.secretKey}")
-    private String secretkey;
+    private static String secretkey;
+
     private static long expireTimeMs = 1000 * 10;
 
-    // Jwt 토큰 생성
-    public String createToken(String user_email){
-        // Claim = Jwt Token에 들어갈 정보
-        Claims claims = Jwts.claims();
-        // Claim에 user_email을 넣어 줌으로써 나중에 user_email을 꺼낼 수 있음
-        claims.put("user_email", user_email);
-        // Jwt payload에 저장되는 정보 단위, 보통 여기서 user를 식별하는 값을 넣는다.
-        return Jwts.builder()
-                .setClaims(claims)  // 정보 저장
-                .setIssuedAt(new Date(System.currentTimeMillis()))  // 토큰 발행 시간 정보
-                .setExpiration(new Date(System.currentTimeMillis() + expireTimeMs))  // 토큰 유효시간
-                .signWith(SignatureAlgorithm.HS256, secretkey)  // 사용할 암호화 알고리즘과 signature에 들어갈 secret값
-                .compact();  // si
+    // Jwt 토큰 생성 메소드
+    public String createToken(LoginDto userDto){
+        JwtBuilder builder = Jwts.builder()
+                .setHeader(createHeader())
+                .setClaims(createClaims(userDto))
+                .setSubject(String.valueOf(userDto.getEmail()))
+                .signWith(SignatureAlgorithm.HS256, createSignature())
+                .setExpiration(createExpiredDate());
+        return builder.compact();
+    }
+
+    // 1. Header값 생성해주는 메소드
+    private static Map<String, Object> createHeader(){
+        Map<String, Object> header = new HashMap<>();
+        header.put("typ", "JWT");
+        header.put("alg", "HS256");
+        header.put("regDate",System.currentTimeMillis());
+        return header;
+    }
+
+    // 2. 사용자 정보를 기반으로 클래임 생성 메소드
+    private Map<String, Object> createClaims(LoginDto userDto) {
+        Map<String, Object> claims = new HashMap<>();
+
+        claims.put("user_email", userDto.getEmail());
+        claims.put("password", userDto.getPw());
+        return claims;
+    }
+
+    // 3. JWT 서명 발급해주는 메소드
+    private static Key createSignature() {
+        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(secretkey);
+        return new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS256.getJcaName());
+    }
+
+    // 4. 토큰의 만료기간의 지정하는 메소드
+    private Date createExpiredDate() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.HOUR, 8);
+        return c.getTime();
     }
 
     // Claims에서 user_email 꺼내기

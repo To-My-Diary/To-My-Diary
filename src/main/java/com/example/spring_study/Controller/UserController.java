@@ -7,8 +7,11 @@ import com.example.spring_study.Exception.IncorrectPasswordException;
 import com.example.spring_study.Exception.NotFoundUserException;
 import com.example.spring_study.Exception.SignUpEmailException;
 import com.example.spring_study.Exception.SignUpTelException;
+import com.example.spring_study.Jwt.AuthConstants;
 import com.example.spring_study.Jwt.JwtTokenProvider;
 import com.example.spring_study.Service.UserService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -81,7 +84,7 @@ public class UserController {
             return createJSON("msg", e.getMessage());
         }
 
-        String jwtToken = jwtTokenProvider.createToken(user.getEmail());
+        String jwtToken = jwtTokenProvider.createToken(loginDto);
 
         return jwtToken;
     }
