@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Calendar;
@@ -59,7 +60,7 @@ public class JwtTokenProvider {
     }
 
     // 3. JWT 서명 발급해주는 메소드
-    private Key createSignature() {
+    public Key createSignature() {
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(secretkey);
         return new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS256.getJcaName());
     }

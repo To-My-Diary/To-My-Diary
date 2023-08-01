@@ -30,6 +30,7 @@ public class UserService {
                 .name(joinDto.getName())
                 .tel(joinDto.getTel())
                 .gender(joinDto.getGender())
+                .role("ROLE_USER")
                 .build();
         userRepository.save(user);
     }

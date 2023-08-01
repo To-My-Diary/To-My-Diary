@@ -39,7 +39,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         Claims claims = Jwts.claims().setSubject(customUserDetails.getUsername());
         String jwtToken = Jwts.builder()
                 .setSubject(customUserDetails.getUsername())
-                .setExpiration(new Date(System.currentTimeMillis() + (1000*10)))
+                .setExpiration(new Date(System.currentTimeMillis() + (1000L*100)))
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
@@ -53,7 +53,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     // 인증용 객체를 AuthenticationManager 구현체인 CustomAuthentication Provider에게 전달한다.
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-
+        System.out.println("CustomAuthenticationFlter ");
         UsernamePasswordAuthenticationToken authRequest;
         try{
             authRequest = getAuthRequest(request);
@@ -62,8 +62,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         }
         Authentication authentication = getAuthenticationManager().authenticate(authRequest);
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        System.out.println(customUserDetails.getUser().getEmail());
-        System.out.println(customUserDetails.getUser().getPw());
 
         return this.getAuthenticationManager().authenticate(authRequest);
     }

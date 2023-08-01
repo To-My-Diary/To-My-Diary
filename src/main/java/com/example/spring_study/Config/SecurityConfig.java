@@ -1,6 +1,8 @@
 package com.example.spring_study.Config;
 
+import com.example.spring_study.Jwt.JwtTokenFilter;
 import com.example.spring_study.Jwt.JwtTokenProvider;
+import com.example.spring_study.Repository.UserRepository;
 import com.example.spring_study.Security.CustomAuthenticationFilter;
 import com.example.spring_study.Security.CustomAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
@@ -31,6 +34,8 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private final UserRepository userRepository;
+
     @Value("${jwt.secretKey}")
     private String secretKey;
 
@@ -41,25 +46,32 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        // 서버에 인증정보를 저장하지 않기에 csrf를 사용하지 않는다.
-        http.csrf().disable();
-        http
+
+        http.authorizeHttpRequests()
+                .requestMatchers(
+                        new AntPathRequestMatcher("/weather/api**")).hasAuthority("ROLE_USER")
+                .anyRequest().permitAll()
+                .and()
+                // 서버에 인증정보를 저장하지 않기에 csrf를 사용하지 않는다.
+                .csrf().disable()
+                // form 기반 로그인 방식을 비활성화하여 커스텀 필터를 사용
+                .formLogin().disable()
+                .httpBasic().disable()
                 // 세션기반의 인증기반을 사용하지 않는다.
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                // form 기반 로그인 방식을 비활성화하여 커스텀 필터를 사용
-                .formLogin().disable()
+                .addFilter(customAuthenticationFilter())
+                .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
                 // Spring Security Custom Filter 적용 - Form '인증'에 대해서 적용
-                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                // Spring Security JWT Filter 적용
-//                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), BasicAuthenticationFilter.class)
-                .authorizeHttpRequests()
-                .requestMatchers(
-                        new AntPathRequestMatcher("/index**")).authenticated()
-                .anyRequest().permitAll();
+
+
         return http.build();
     }
 
+    @Bean
+    public JwtTokenFilter jwtTokenFilter(){
+        return new JwtTokenFilter(userRepository);
+    }
 
     // authenticate의 인증 메서드를 제공하는 매니저로 Provider의 인터페이스를 의미
     @Bean
