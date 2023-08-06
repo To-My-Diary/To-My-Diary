@@ -6,6 +6,7 @@ import com.example.spring_study.Enum.AchieveEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,4 +21,7 @@ public interface GoalRepository extends JpaRepository<Goal, Long> {
     List<Goal> findByAchieve(AchieveEnum Type);   // 목표 달성여부 값으로 조회
 
     List<Goal> findByUserEmail(String email);
+
+    /** 특정 달의 목표 가져오기 */
+    List<Goal> findAllByPlanDateBetween(LocalDate start, LocalDate end);
 }

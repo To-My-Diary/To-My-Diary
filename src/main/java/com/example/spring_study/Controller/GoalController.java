@@ -1,11 +1,13 @@
 package com.example.spring_study.Controller;
 
 import com.example.spring_study.DTO.GoalDto;
+import com.example.spring_study.Entity.DetailGoal;
+import com.example.spring_study.Entity.Goal;
 import com.example.spring_study.Service.GoalService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,17 +21,17 @@ public class GoalController {
         goalService.createGoal(goalDto);
     }
 
-//    /** 목표 수정 */
-//    @PostMapping("/modify/goal")
-//    public void modifyGoal(@RequestBody GoalDto goalDto) {
-//        goalService.modifyGoal(goalDto);
-//    }
-//
-//    /** 목표 삭제 */
-//    @PostMapping("/delete/goal/{goalId}")
-//    public void deleteGoal(@PathVariable("goalId") Long goalId) {
-//        goalService.deleteGoal(goalId);
-//    }
+
+    @GetMapping("/goal/{year}/{month}")
+    public List<Goal> goalsByMonth(@PathVariable("year") int year, @PathVariable("month") int month) {
+        return goalService.goalsByMonth(year, month);
+    }
+
+
+    @GetMapping("/detail/goal/{year}/{month}")
+    public List<DetailGoal> detailGoalsByMonth(@PathVariable("year") int year, @PathVariable("month") int month) {
+        return goalService.detailGoalsByMonth(year, month);
+    }
 
 
 }

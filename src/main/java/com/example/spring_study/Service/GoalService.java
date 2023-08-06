@@ -4,14 +4,15 @@ import com.example.spring_study.DTO.DetailGoalDto;
 import com.example.spring_study.DTO.GoalDto;
 import com.example.spring_study.Entity.DetailGoal;
 import com.example.spring_study.Entity.Goal;
-import com.example.spring_study.Entity.User;
 import com.example.spring_study.Repository.DetailGoalRepository;
 import com.example.spring_study.Repository.GoalRepository;
 import com.example.spring_study.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -28,11 +29,24 @@ public class GoalService {
         Goal goal = dtoToEntity(goalDto);
         long goalId = goalRepository.save(goal).getGoalId();
         // 세부 목표 저장
-        List<DetailGoal> detailGoals = dtoToEntity(goalDto.getDetailGoals());
+        List<DetailGoal> detailGoals = dtoToEntity(goalDto.getDetailGoals(), goalDto.getColor());
         for (DetailGoal detailGoal : detailGoals) {
+            // 외래키 설정
             detailGoal.setGoal(goalRepository.findById(goalId).get());
             detailGoalRepository.save(detailGoal);
         }
+    }
+
+    /** 한 달 메인 목표 모아 보여주기 */
+    public List<Goal> goalsByMonth(int year, int month) {
+        List<LocalDate> dates = getStartAndEnd(year, month);
+        return goalRepository.findAllByPlanDateBetween(dates.get(0), dates.get(1));
+    }
+
+    /** 한 달 상세 목표 모아 보여주기 */
+    public List<DetailGoal> detailGoalsByMonth(int year, int month) {
+        List<LocalDate> dates = getStartAndEnd(year, month);
+        return detailGoalRepository.findAllByPlanDateBetween(dates.get(0), dates.get(1));
     }
 
     /** 한 달 메인 목표 모아 보여주기 */
@@ -67,8 +81,8 @@ public class GoalService {
 
     }
 
-    /** DetailGoalDto -> DetailGoal Entity */
-    List<DetailGoal> dtoToEntity(List<DetailGoalDto> dto){
+    /** DetailGoalDto List -> DetailGoal Entity List */
+    List<DetailGoal> dtoToEntity(List<DetailGoalDto> dto, String color){
         // dtoList -> entityList
         List<DetailGoal> detailGoalList = new ArrayList<>();
         for (DetailGoalDto detailGoalDto : dto) {
@@ -77,7 +91,8 @@ public class GoalService {
 //                .goal(goalRepository.findById(goalId).get())
                     .content(detailGoalDto.getContent())
                     .achieve(detailGoalDto.getAchieve())
-                    .planDate(detailGoalDto.getPlanDate()).build();
+                    .planDate(detailGoalDto.getPlanDate())
+                    .color(color).build();
             detailGoalList.add(detailGoal);
         }
         return detailGoalList;
@@ -96,6 +111,35 @@ public class GoalService {
 //                .detailGoals(detailGoalList)
                 .build();
         return goal;
+    }
+
+    /** Goal Entity -> GoalDto */
+    GoalDto entityToDto(Goal goal) {
+        GoalDto dto = new GoalDto(goal.getGoalId(), goal.getContent(), goal.getAchieve(), goal.getAchieveRate()
+                , goal.getPlanDate(), goal.getColor(), goal.getUser().getEmail(), null);
+        return dto;
+    }
+
+    /** DetailGoal Entity -> DetailGoalDto */
+    DetailGoalDto entityToDto(DetailGoal detailGoal) {
+        DetailGoalDto dto = new DetailGoalDto(detailGoal.getDetailGoalId(), detailGoal.getDetailGoalId()
+                , detailGoal.getContent(), detailGoal.getAchieve(), detailGoal.getPlanDate());
+        return dto;
+    }
+
+    /** 시작 날짜와 마지막 날짜 계산하기 */
+    List<LocalDate> getStartAndEnd(int year, int month) {
+        // 한 달의 마지막 날짜를 구하기 위한 Calendar 라이브러리
+        Calendar cal = Calendar.getInstance();
+        cal.set(year,month-1,1);
+
+        // 시작 날짜와 마지막 날짜
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = LocalDate.of(year, month, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+
+        ArrayList<LocalDate> dates = new ArrayList<>();
+        dates.add(startDate); dates.add(endDate);
+        return dates;
     }
 
 }
