@@ -23,11 +23,11 @@ public class User {
     private String tel;
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
-    @Builder.Default  // 빌더 패턴 사용시 초기화 설정을 위한 어노테이션
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    public List<Goal> goalList = new ArrayList<>();
-    public void addGoalList(Goal goal){
-        goal.setUser(this);
-        this.goalList.add(goal);
-    }
+//    @Builder.Default  // 빌더 패턴 사용시 초기화 설정을 위한 어노테이션
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    public List<Goal> goalList = new ArrayList<>();
+//    public void addGoalList(Goal goal){
+//        goal.setUser(this);
+//        this.goalList.add(goal);
+//    }
 }

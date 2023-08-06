@@ -1,6 +1,7 @@
 package com.example.spring_study.Entity;
 
 import com.example.spring_study.Enum.AchieveEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,7 +29,10 @@ public class DetailGoal extends BaseEntity {
     @Column(nullable = false)
     private LocalDate planDate; // 목표 날짜
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    private String color; // 색깔
+
+    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name="goal_id")
     private Goal goal;
 }

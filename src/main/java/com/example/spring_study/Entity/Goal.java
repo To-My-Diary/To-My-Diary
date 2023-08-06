@@ -32,6 +32,7 @@ public class Goal extends BaseEntity {
 
     private LocalDate planDate; // 날짜
 
+    @ColumnDefault("0")
     private int achieveRate; // 달성률
 
     private String color; // 색깔
