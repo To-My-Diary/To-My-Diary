@@ -37,7 +37,7 @@ public class ScheduleService {
     @Transactional
     public void modifySchedule(ScheduleDto scheduleDto) {
         Schedule schedule = scheduleRepository.findByScheduleId(scheduleDto.getScheduleId());
-        schedule.update(scheduleDto.getMsg(), scheduleDto.getAchieve());
+        schedule.update(scheduleDto.getMsg(), scheduleDto.getAchieve(), scheduleDto.getPlanDate());
         System.out.println("[" + scheduleDto.getMsg() + "] 할 일을 수정했습니다.");
     }
     
