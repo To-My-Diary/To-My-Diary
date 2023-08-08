@@ -56,7 +56,7 @@ class JwyTests {
                 .build();
         Goal goal = Goal.builder()
                 .content("제목")
-                .achieve_rate(10)
+                .achieveRate(10)
                 .achieve(AchieveEnum.doing)
                 .build();
         user1.addGoalList(goal);
@@ -78,7 +78,7 @@ class JwyTests {
     void test3(){
         Goal goal1 = Goal.builder()
                 .content("제목222")
-                .achieve_rate(20)
+                .achieveRate(20)
                 .achieve(AchieveEnum.fail)
                 .build();
         goalRepository.save(goal1);
