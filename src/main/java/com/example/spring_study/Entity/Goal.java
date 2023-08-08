@@ -1,5 +1,6 @@
 package com.example.spring_study.Entity;
 
+import com.example.spring_study.DTO.GoalDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,4 +44,14 @@ public class Goal extends BaseEntity {
 
     @OneToMany(mappedBy = "goal")
     private List<DetailGoal> detailGoals = new ArrayList<>(); // 상세 목표 리스트
+
+    public void update(AchieveEnum achieve) {
+        this.achieve = achieve;
+    }
+
+    public void modifyGoal(GoalDto goalDto) {
+        this.content = goalDto.getContent();
+        this.planDate = goalDto.getPlanDate();
+        this.color = goalDto.getColor();
+    }
 }

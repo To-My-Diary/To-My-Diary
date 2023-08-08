@@ -34,4 +34,8 @@ public interface DetailGoalRepository extends JpaRepository<DetailGoal, Long> {
 
     /** 사용자별 날짜별 상세 목표를 가져오되 달성별로 내림차순 정렬 */
     List<DetailGoal> findAllByGoal_User_EmailAndCreateDateOrderByAchieveDesc(String email, LocalDate date);
+
+    /** 목표 아이디로 목표 상세 전부 삭제하기 */
+    void deleteAllByGoal_GoalId(Long goalId);
+
 }
