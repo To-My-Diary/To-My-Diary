@@ -60,38 +60,11 @@ public class SecurityConfig {
                 // 세션기반의 인증기반을 사용하지 않는다.
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(customAuthenticationFilter())
-                .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtTokenFilter(userRepository), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new jwtExceptionFilter(), JwtTokenFilter.class);
                 // Spring Security Custom Filter 적용 - Form '인증'에 대해서 적용
 
 
         return http.build();
-    }
-
-    @Bean
-    public JwtTokenFilter jwtTokenFilter(){
-        return new JwtTokenFilter(userRepository);
-    }
-
-    // authenticate의 인증 메서드를 제공하는 매니저로 Provider의 인터페이스를 의미
-    @Bean
-    public AuthenticationManager authenticationManager(){
-        return new ProviderManager(customAuthenticationProvider());
-    }
-
-    // 인증 제공자로 사용자의 이름과 비밀번호가 요구된다.
-    @Bean
-    public CustomAuthenticationProvider customAuthenticationProvider(){
-        return new CustomAuthenticationProvider(bCryptPasswordEncoder);
-    }
-
-    // 커스텀을 수행한 인증 필터로 접근 URL, 데이터 전달방식 등 인증과정 및 인증 후 처리에 대한 설정 구성하는 메소드
-    @Bean
-    public CustomAuthenticationFilter customAuthenticationFilter(){
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
-        customAuthenticationFilter.setFilterProcessesUrl("/doLogin");
-        customAuthenticationFilter.afterPropertiesSet();
-        return customAuthenticationFilter;
     }
 }
