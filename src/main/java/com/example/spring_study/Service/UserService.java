@@ -9,6 +9,10 @@ import com.example.spring_study.Exception.SignUpEmailException;
 import com.example.spring_study.Exception.SignUpTelException;
 import com.example.spring_study.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +51,14 @@ public class UserService {
         if(!bCryptPasswordEncoder.matches(loginDto.getPw(), user.getPw())){
             throw new IncorrectPasswordException("비밀번호가 올바르지 않습니다. 다시 입력해주세요.");
         }
+        AbstractAuthenticationToken abstractAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                user.getEmail(),
+                user.getPw()
+        );
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(abstractAuthenticationToken);
+        SecurityContextHolder.setContext(securityContext);
+
         return user;
     }
 }

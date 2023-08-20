@@ -12,13 +12,16 @@ import com.example.spring_study.Exception.SignUpTelException;
 import com.example.spring_study.Jwt.JwtTokenProvider;
 import com.example.spring_study.Service.UserService;
 import com.example.spring_study.Util.UserValidation;
-import io.jsonwebtoken.Jwt;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -30,9 +33,11 @@ public class UserController {
     private final JwtTokenProvider jwtTokenProvider;
 
     //  WebSecurity 적용 test
-    @GetMapping(value = "/")
+    @GetMapping(value = "test")
     @ResponseBody
     public ResponseDto test(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication);
         return new ResponseDto(ResponseStatus.SUCCESS);
     }
     //  회원가입 요청 - Post
@@ -68,7 +73,7 @@ public class UserController {
 
     @PostMapping(value = "login")
     @ResponseBody
-    public ResponseDto login(@Valid @RequestBody LoginDto loginDto, BindingResult bindingResult){
+    public ResponseDto login(@Valid @RequestBody LoginDto loginDto, BindingResult bindingResult, HttpServletResponse response){
         List<String> error_list = UserValidation.getValidationError(bindingResult);
         if(!error_list.isEmpty()){
             return new ResponseDto(false, null, HttpStatus.BAD_REQUEST.value(), error_list);
@@ -82,6 +87,9 @@ public class UserController {
             return new ResponseDto(ResponseStatus.POST_PASSWORD_INCORRECT);
         }
         String token = jwtTokenProvider.createToken(loginDto);
-        return new ResponseDto(token);
+
+        // Front에서 header값으로 받을 수 있도록 구현
+        response.setHeader("Authorization", "Bearer "+token);
+        return new ResponseDto(ResponseStatus.SUCCESS);
     }
 }

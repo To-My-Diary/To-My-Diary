@@ -16,7 +16,8 @@ public enum ResponseStatus {
     POST_PASSSWORD_INVALID(false, HttpStatus.BAD_REQUEST.value(), "비밀번호 양식을 확인해주세요."),
     POST_TEL_INVALID(false, HttpStatus.BAD_REQUEST.value(), "전화번호 양식을 확인해주세요."),
     POST_EMAIL_INCORRECT(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 이메일입니다."),
-    POST_PASSWORD_INCORRECT(false, HttpStatus.BAD_REQUEST.value(), "비밀번호가 틀렸습니다");
+    POST_PASSWORD_INCORRECT(false, HttpStatus.BAD_REQUEST.value(), "비밀번호가 틀렸습니다"),
+    INVALID_JWT(false, HttpStatus.BAD_REQUEST.value(), "유효하지 않은 JWT입니다.");
 
     private final boolean isSuccess;
     private final int code;

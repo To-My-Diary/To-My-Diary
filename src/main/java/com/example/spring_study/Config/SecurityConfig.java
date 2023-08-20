@@ -1,6 +1,7 @@
 package com.example.spring_study.Config;
 
 import com.example.spring_study.Jwt.JwtTokenFilter;
+import com.example.spring_study.Jwt.jwtExceptionFilter;
 import com.example.spring_study.Repository.UserRepository;
 import com.example.spring_study.Security.CustomAuthenticationFilter;
 import com.example.spring_study.Security.CustomAuthenticationProvider;
@@ -38,7 +39,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web) -> {
-            web.ignoring().antMatchers("/","/users/**", "/swagger-ui/**","/v3/api-docs/**");
+            web.ignoring().antMatchers("/","/users/login","/users/join", "/swagger-ui/**","/v3/api-docs/**");
         };
     }
 
@@ -48,7 +49,7 @@ public class SecurityConfig {
                 .requestMatchers(
                         new AntPathRequestMatcher("/weather/api**")).hasRole("USER")
                 .requestMatchers(
-                        new AntPathRequestMatcher("/")).hasRole("USER")
+                        new AntPathRequestMatcher("/users/test")).hasRole("USER")
                 .anyRequest().permitAll()
                 .and()
                 // 서버에 인증정보를 저장하지 않기에 csrf를 사용하지 않는다.
@@ -60,7 +61,8 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(customAuthenticationFilter())
-                .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new jwtExceptionFilter(), JwtTokenFilter.class);
                 // Spring Security Custom Filter 적용 - Form '인증'에 대해서 적용
 
 
