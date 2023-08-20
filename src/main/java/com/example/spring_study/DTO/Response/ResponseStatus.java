@@ -11,7 +11,10 @@ public enum ResponseStatus {
     //    400 상태코드
     POST_EMAIL_DUPLICATE(false, HttpStatus.BAD_REQUEST.value(), "중복된 이메일입니다."),
     POST_PASSWORD_DIFF(false, HttpStatus.BAD_REQUEST.value(), "비밀번호 확인 값이 다릅니다."),
-    POST_TEL_DUPLICATE(false, HttpStatus.BAD_REQUEST.value(), "중복된 전화번호입니다.");
+    POST_TEL_DUPLICATE(false, HttpStatus.BAD_REQUEST.value(), "중복된 전화번호입니다."),
+    POST_EMAIL_INVALID(false, HttpStatus.BAD_REQUEST.value(), "이메일 형식을 확인해주세요"),
+    POST_PASSSWORD_INVALID(false, HttpStatus.BAD_REQUEST.value(), "비밀번호 양식을 확인해주세요."),
+    POST_TEL_INVALID(false, HttpStatus.BAD_REQUEST.value(), "전화번호 양식을 확인해주세요.");
 
     private final boolean isSuccess;
     private final int code;
@@ -23,6 +26,4 @@ public enum ResponseStatus {
         this.code = code;
         this.message = message;
     }
-
-
 }
