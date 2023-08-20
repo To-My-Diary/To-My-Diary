@@ -1,25 +1,21 @@
 package com.example.spring_study.Controller;
 
 import com.example.spring_study.DTO.JoinDto;
-import com.example.spring_study.DTO.LoginDto;
-import com.example.spring_study.Entity.User;
-import com.example.spring_study.Exception.IncorrectPasswordException;
-import com.example.spring_study.Exception.NotFoundUserException;
+import com.example.spring_study.DTO.Response.ResponseDto;
+import com.example.spring_study.DTO.Response.ResponseStatus;
 import com.example.spring_study.Exception.SignUpEmailException;
 import com.example.spring_study.Exception.SignUpTelException;
-import com.example.spring_study.Jwt.AuthConstants;
 import com.example.spring_study.Jwt.JwtTokenProvider;
 import com.example.spring_study.Service.UserService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,64 +24,30 @@ public class UserController {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    //  Json 객체 생성
-    public Object createJSON(String key, Object value){
-        JSONObject obj = new JSONObject();
-        obj.put(key, value);
-        return obj.toString();
-    }
-
-    //  회원가입 페이지 접근 - Get
-    @GetMapping(value = "/join")
-    public String join(){
-        return "join";
-    }
-
     //  회원가입 요청 - Post
-    @PostMapping(value="/doJoin")
+    @PostMapping(value="/user")
     @ResponseBody
-    public Object doJoin(@Valid JoinDto joinDto, BindingResult bindingResult){
-        JSONArray jArray = new JSONArray();
+    public ResponseDto doJoin(@Valid @RequestBody JoinDto joinDto, BindingResult bindingResult){
+        List<String> error_list = new ArrayList<>();
         //  Spring Validation을 이용하여 오류 메시지 return
         if(bindingResult.hasErrors()){
             bindingResult.getFieldErrors().forEach(error->{
-                jArray.put(createJSON(error.getField(), error.getDefaultMessage()));
+                error_list.add(error.getDefaultMessage());
             });
-            return createJSON("jArray", jArray);
+
+            return new ResponseDto(false, null, HttpStatus.BAD_REQUEST.value(),error_list);
         }else if(!joinDto.getPw().equals(joinDto.getConfirmPw())){
-            return createJSON("msg", "2개의 패스워드가 일치하지 않습니다.");
+            return new ResponseDto(ResponseStatus.POST_PASSWORD_DIFF);
         }
         //  오류가 없다면 생성된 joinDto return
         try{
             userService.create(joinDto);
         }catch(SignUpEmailException e){
-            return createJSON("msg", e.getMessage());
+            return new ResponseDto(ResponseStatus.POST_EMAIL_DUPLICATE);
         }catch(SignUpTelException e){
-            return createJSON("msg", e.getMessage());
+            return new ResponseDto(ResponseStatus.POST_TEL_DUPLICATE);
         }
-        return joinDto;
+        return new ResponseDto(ResponseStatus.JOIN_SUCCESS);
     }
 
-    // 로그인 페이지 이동 메소드
-    @GetMapping(value="/loginForm")
-    public String login(){ return "loginForm";}
-
-
-    // 로그인 실행 메소드
-    @PostMapping(value = "/login")
-    @ResponseBody
-    public Object doLogin(LoginDto loginDto){
-        User user = null;
-        try{
-            user = userService.login(loginDto);
-        }catch(NotFoundUserException e){
-            return createJSON("msg", e.getMessage());
-        }catch(IncorrectPasswordException e){
-            return createJSON("msg", e.getMessage());
-        }
-        System.out.println("실행");
-        String jwtToken = jwtTokenProvider.createToken(loginDto);
-
-        return jwtToken;
-    }
 }

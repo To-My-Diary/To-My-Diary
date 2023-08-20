@@ -49,7 +49,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests()
                 .requestMatchers(
-                        new AntPathRequestMatcher("/weather/api**")).hasAuthority("ROLE_USER")
+                        new AntPathRequestMatcher("/weather/api**")).hasRole("USER")
                 .anyRequest().permitAll()
                 .and()
                 // 서버에 인증정보를 저장하지 않기에 csrf를 사용하지 않는다.
