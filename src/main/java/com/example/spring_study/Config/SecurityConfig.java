@@ -1,6 +1,7 @@
 package com.example.spring_study.Config;
 
 import com.example.spring_study.Jwt.JwtTokenFilter;
+import com.example.spring_study.Jwt.JwtTokenProvider;
 import com.example.spring_study.Jwt.jwtExceptionFilter;
 import com.example.spring_study.Repository.UserRepository;
 import com.example.spring_study.Security.CustomAuthenticationFilter;
@@ -33,8 +34,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
-    @Value("${jwt.secretKey}")
-    private String secretKey;
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+//    @Value("${jwt.secretKey}")
+//    private String secretKey;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
@@ -60,7 +64,7 @@ public class SecurityConfig {
                 // 세션기반의 인증기반을 사용하지 않는다.
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new JwtTokenFilter(userRepository), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtTokenFilter(userRepository, jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new jwtExceptionFilter(), JwtTokenFilter.class);
                 // Spring Security Custom Filter 적용 - Form '인증'에 대해서 적용
 

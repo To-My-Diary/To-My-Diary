@@ -28,11 +28,11 @@ import static com.example.spring_study.DTO.Response.ResponseStatus.INVALID_JWT;
 // 해당 클래스는 Spring Security의 환경설정을 구성하는 단계에서 필터로 등록한 클래스이다.
 // 지정한 URL별 JWT유효성 검증을 수행하며 직접적인 사용자 '인증'은 확인한다.
 public class JwtTokenFilter extends OncePerRequestFilter {
-    @Value("${jwt.secretKey}")
-    private String secretKey;
+    private JwtTokenProvider jwtTokenProvider;
     private UserRepository userRepository;
 
-    public JwtTokenFilter(UserRepository userRepository) {
+    public JwtTokenFilter(UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
         this.userRepository = userRepository;
     }
 
@@ -47,8 +47,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 return;
             }
             String token = request.getHeader("Authorization").replace("Bearer ", "");
-            System.out.println(token);
-            String email = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+            System.out.println("token : "+token);
+            String email = jwtTokenProvider.getUserEmail(token);
+            System.out.println(email);
 
             if(email != null){
                 User user = userRepository.findByEmail(email).get();
@@ -60,6 +61,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }catch (Exception e){
+            System.out.println(e.getMessage());
             throw new BaseException(INVALID_JWT);
         }
         chain.doFilter(request,response);
