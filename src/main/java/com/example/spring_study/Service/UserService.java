@@ -10,7 +10,6 @@ import com.example.spring_study.Exception.SignUpTelException;
 import com.example.spring_study.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     public void create(JoinDto joinDto) {
         if( !userRepository.findByEmail(joinDto.getEmail()).isEmpty() ){
             throw new SignUpEmailException("이미 존재하는 Email입니다.");

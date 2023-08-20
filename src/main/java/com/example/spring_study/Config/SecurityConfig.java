@@ -1,7 +1,6 @@
 package com.example.spring_study.Config;
 
 import com.example.spring_study.Jwt.JwtTokenFilter;
-import com.example.spring_study.Jwt.JwtTokenProvider;
 import com.example.spring_study.Repository.UserRepository;
 import com.example.spring_study.Security.CustomAuthenticationFilter;
 import com.example.spring_study.Security.CustomAuthenticationProvider;
@@ -31,25 +30,25 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final JwtTokenProvider jwtTokenProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
     private final UserRepository userRepository;
-
     @Value("${jwt.secretKey}")
     private String secretKey;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
-        return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        return (web) -> {
+            web.ignoring().antMatchers("/","/users/**", "/swagger-ui/**","/v3/api-docs/**");
+        };
     }
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-
         http.authorizeHttpRequests()
                 .requestMatchers(
                         new AntPathRequestMatcher("/weather/api**")).hasRole("USER")
+                .requestMatchers(
+                        new AntPathRequestMatcher("/")).hasRole("USER")
                 .anyRequest().permitAll()
                 .and()
                 // 서버에 인증정보를 저장하지 않기에 csrf를 사용하지 않는다.
