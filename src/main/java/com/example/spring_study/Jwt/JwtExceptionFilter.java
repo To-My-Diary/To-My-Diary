@@ -22,7 +22,6 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            System.out.println("aaa"+e.getMessage());
             ErrorResponse errorResponse = new ErrorResponse(HttpStatus.FORBIDDEN.value(), e.getMessage());
             response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
         }
