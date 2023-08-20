@@ -18,7 +18,8 @@ public enum ResponseStatus {
     POST_EMAIL_INCORRECT(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 이메일입니다."),
     POST_PASSWORD_INCORRECT(false, HttpStatus.BAD_REQUEST.value(), "비밀번호가 틀렸습니다"),
     INVALID_JWT(false, HttpStatus.BAD_REQUEST.value(), "유효하지 않은 JWT입니다."),
-    UNEXPECTED_ERROR(false, HttpStatus.BAD_REQUEST.value(), "예상치 못한 에러가 발생했습니다.");
+    UNEXPECTED_ERROR(false, HttpStatus.BAD_REQUEST.value(), "예상치 못한 에러가 발생했습니다."),
+    NOT_FOUND_JWT(false, HttpStatus.BAD_REQUEST.value(), "JWT가 존재하지 않습니다.");
 
     private final boolean isSuccess;
     private final int code;

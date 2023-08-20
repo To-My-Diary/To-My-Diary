@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static com.example.spring_study.DTO.Response.ResponseStatus.INVALID_JWT;
+import static com.example.spring_study.DTO.Response.ResponseStatus.NOT_FOUND_JWT;
 
 
 // OncePerRequestFilter : 매번 들어갈 때 마다 체크 해주는 필터
@@ -42,14 +43,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         try{
             String jwtHeader = request.getHeader("Authorization");
 
-            if(jwtHeader == null || !jwtHeader.startsWith("Bearer ")){
-                chain.doFilter(request, response);
-                return;
+            if(jwtHeader == null){
+                throw new BaseException(NOT_FOUND_JWT);
+            }else if (!jwtHeader.startsWith("Bearer ")){
+                throw new BaseException(INVALID_JWT);
             }
             String token = request.getHeader("Authorization").replace("Bearer ", "");
             System.out.println("token : "+token);
             String email = jwtTokenProvider.getUserEmail(token);
-            System.out.println(email);
 
             if(email != null){
                 User user = userRepository.findByEmail(email).get();
@@ -61,8 +62,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }catch (Exception e){
-            System.out.println(e.getMessage());
-            throw new BaseException(INVALID_JWT);
+            if(e.getMessage().equals("JWT가 존재하지 않습니다.")){
+                throw new BaseException(NOT_FOUND_JWT);
+            }else{
+                throw new BaseException(INVALID_JWT);
+            }
         }
         chain.doFilter(request,response);
     }

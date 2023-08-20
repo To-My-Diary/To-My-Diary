@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class jwtExceptionFilter extends OncePerRequestFilter {
+public class JwtExceptionFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -22,6 +22,7 @@ public class jwtExceptionFilter extends OncePerRequestFilter {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
+            System.out.println("aaa"+e.getMessage());
             ErrorResponse errorResponse = new ErrorResponse(HttpStatus.FORBIDDEN.value(), e.getMessage());
             response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
         }

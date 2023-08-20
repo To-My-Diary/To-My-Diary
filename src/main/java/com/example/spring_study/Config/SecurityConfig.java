@@ -2,17 +2,11 @@ package com.example.spring_study.Config;
 
 import com.example.spring_study.Jwt.JwtTokenFilter;
 import com.example.spring_study.Jwt.JwtTokenProvider;
-import com.example.spring_study.Jwt.jwtExceptionFilter;
+import com.example.spring_study.Jwt.JwtExceptionFilter;
 import com.example.spring_study.Repository.UserRepository;
-import com.example.spring_study.Security.CustomAuthenticationFilter;
-import com.example.spring_study.Security.CustomAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -20,7 +14,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
@@ -34,11 +27,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
-
     private final JwtTokenProvider jwtTokenProvider;
-
-//    @Value("${jwt.secretKey}")
-//    private String secretKey;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
@@ -65,7 +54,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(new JwtTokenFilter(userRepository, jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new jwtExceptionFilter(), JwtTokenFilter.class);
+                .addFilterBefore(new JwtExceptionFilter(), JwtTokenFilter.class);
                 // Spring Security Custom Filter 적용 - Form '인증'에 대해서 적용
 
 
