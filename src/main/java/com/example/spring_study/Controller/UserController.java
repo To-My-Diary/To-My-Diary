@@ -5,16 +5,12 @@ import com.example.spring_study.DTO.LoginDto;
 import com.example.spring_study.DTO.Response.ResponseDto;
 import com.example.spring_study.DTO.Response.ResponseStatus;
 import com.example.spring_study.Entity.User;
-import com.example.spring_study.Exception.IncorrectPasswordException;
-import com.example.spring_study.Exception.NotFoundUserException;
-import com.example.spring_study.Exception.SignUpEmailException;
-import com.example.spring_study.Exception.SignUpTelException;
+import com.example.spring_study.Exception.*;
 import com.example.spring_study.Jwt.JwtTokenProvider;
 import com.example.spring_study.Service.UserService;
 import com.example.spring_study.Util.UserValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -25,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
@@ -59,13 +55,7 @@ public class UserController {
             return new ResponseDto(ResponseStatus.POST_PASSWORD_DIFF);
         };
 
-        try{
-            userService.create(joinDto);
-        }catch(SignUpEmailException e){
-            return new ResponseDto(ResponseStatus.POST_EMAIL_DUPLICATE);
-        }catch(SignUpTelException e){
-            return new ResponseDto(ResponseStatus.POST_TEL_DUPLICATE);
-        }
+        userService.create(joinDto);
 
         //  오류가 없다면 생성된 Success return
         return new ResponseDto(ResponseStatus.JOIN_SUCCESS);
@@ -78,14 +68,8 @@ public class UserController {
         if(!error_list.isEmpty()){
             return new ResponseDto(false, null, HttpStatus.BAD_REQUEST.value(), error_list);
         }
-        User user = null;
-        try{
-            user = userService.login(loginDto);
-        }catch(NotFoundUserException e){
-            return new ResponseDto(ResponseStatus.POST_EMAIL_INCORRECT);
-        }catch(IncorrectPasswordException e){
-            return new ResponseDto(ResponseStatus.POST_PASSWORD_INCORRECT);
-        }
+
+        User user = userService.login(loginDto);
         String token = jwtTokenProvider.createToken(loginDto);
 
         // Front에서 header값으로 받을 수 있도록 구현
