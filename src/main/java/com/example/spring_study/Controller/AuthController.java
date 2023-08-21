@@ -1,6 +1,15 @@
 package com.example.spring_study.Controller;
 
 import com.example.spring_study.DTO.Response.ResponseDto;
+import com.example.spring_study.Entity.User;
+import com.example.spring_study.Model.KakaoOAuthToken;
+import com.example.spring_study.Model.KakaoUserInfo;
+import com.example.spring_study.Service.AuthService;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -13,36 +22,32 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @RestController
 @RequestMapping(value = "/auth")
+@RequiredArgsConstructor
 public class AuthController {
+
+    private final AuthService authService;
+
     // 카카오 로그인 인증 callback url
     @GetMapping(value = "kakao/callback")
     @ResponseBody
     public ResponseDto kakaoCallback(String code){
-        System.out.println("카카오 인증완료");
-        RestTemplate restTemplate = new RestTemplate();
+        // 인가 권한 체크
+        ResponseEntity<String> response = authService.getAuthorizeToken(code);
 
-//        Http Header 객체 생성
-        HttpHeaders header = new HttpHeaders();
-        header.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        // 권한 체크 후 인증 토큰만 추출
+        String kakaoOAuthToken = authService.getAuthToken(response.getBody());
 
-//        Http Body 객체 생성
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", "authorization_code");
-        params.add("client_id", "148570826c7770f175f7b4c40a87580e");
-        params.add("redirect_uri", "http://localhost:8080/auth/kakao/callback");
-        params.add("code",code);
-//        Header와 Body를 HttpEntity객체에 담기
-        HttpEntity<MultiValueMap<String,String>> kakaoTokenRequest = new HttpEntity<>(params, header);
+        // 사용자 정보 가져오기 (true = 신규회원 / false = 기존회원)
+        User user = authService.getUserInfo(kakaoOAuthToken);
 
-//        Http 요청
-        ResponseEntity<String> response = restTemplate.exchange(
-                "https://kauth.kakao.com/oauth/token",
-                HttpMethod.POST,
-                kakaoTokenRequest,
-                String.class
-        );
-        return new ResponseDto(response);
+        // 신규, 기존 회원 체크
+        String token = authService.joinOrLogin(user);
+
+        return new ResponseDto(token);
     }
 }

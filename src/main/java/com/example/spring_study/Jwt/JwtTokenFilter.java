@@ -2,17 +2,14 @@ package com.example.spring_study.Jwt;
 
 import com.example.spring_study.Entity.User;
 import com.example.spring_study.Exception.BaseException;
-import com.example.spring_study.Exception.NotFoundUserException;
 import com.example.spring_study.Repository.UserRepository;
 import com.example.spring_study.Security.CustomUserDetails;
-import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationManager;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -21,9 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.example.spring_study.DTO.Response.ResponseStatus.FAIL_AUTH_JWT;
 import static com.example.spring_study.DTO.Response.ResponseStatus.INVALID_JWT;
-import static com.example.spring_study.DTO.Response.ResponseStatus.NOT_FOUND_JWT;
-
 
 // OncePerRequestFilter : 매번 들어갈 때 마다 체크 해주는 필터
 // 해당 클래스는 Spring Security의 환경설정을 구성하는 단계에서 필터로 등록한 클래스이다.
@@ -31,43 +27,36 @@ import static com.example.spring_study.DTO.Response.ResponseStatus.NOT_FOUND_JWT
 public class JwtTokenFilter extends OncePerRequestFilter {
     private JwtTokenProvider jwtTokenProvider;
     private UserRepository userRepository;
-
-    public JwtTokenFilter(UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider, UserRepository userRepository){
         this.userRepository = userRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
-
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("jwtfilter 실행");
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        System.out.println("jwtTokenFilter");
+        String token = request.getHeader("Authorization");
         try{
-            String jwtHeader = request.getHeader("Authorization");
+        if(token == null || !token.startsWith("Bearer ")){
+            throw new BaseException(INVALID_JWT);
+        }
+        token = token.replace("Bearer ","");
 
-            if(jwtHeader == null){
-                throw new BaseException(NOT_FOUND_JWT);
-            }else if (!jwtHeader.startsWith("Bearer ")){
-                throw new BaseException(INVALID_JWT);
-            }
-            String token = request.getHeader("Authorization").replace("Bearer ", "");
-            System.out.println("token : "+token);
-            String email = jwtTokenProvider.getUserEmail(token);
+        String email = jwtTokenProvider.getUserEmail(token);
+        String password = jwtTokenProvider.getUserPassword(token);
+        System.out.println(email +" / "+password);
 
             if(email != null){
                 User user = userRepository.findByEmail(email).get();
-
-                CustomUserDetails customUserDetails = new CustomUserDetails(user);
-
-                Authentication authentication = new UsernamePasswordAuthenticationToken(customUserDetails,customUserDetails.getPassword(),customUserDetails.getAuthorities());
-
+                CustomUserDetails userDetails = new CustomUserDetails(user);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(email, password, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        }catch (Exception e){
-            if(e.getMessage().equals("JWT가 존재하지 않습니다.")){
-                throw new BaseException(NOT_FOUND_JWT);
-            }else{
-                throw new BaseException(INVALID_JWT);
-            }
+        }catch (BaseException e){
+            throw new BaseException(INVALID_JWT);
+        } catch(Exception e){
+            e.printStackTrace();
+            throw new BaseException(FAIL_AUTH_JWT);
         }
-        chain.doFilter(request,response);
+        filterChain.doFilter(request,response);
     }
 }

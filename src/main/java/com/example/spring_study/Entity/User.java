@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder // 빌더 어노테이션 위치 수정
-public class User {
+public class User extends BaseEntity{
     @Id
     @Column(length=50)
     private String email;

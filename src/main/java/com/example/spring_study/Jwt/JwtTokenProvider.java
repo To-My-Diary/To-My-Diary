@@ -31,11 +31,10 @@ public class JwtTokenProvider {
     private static long expireTimeMs = 1000 * 10;
 
     // Jwt 토큰 생성 메소드
-    public String createToken(LoginDto userDto){
+    public String createToken(String email, String pw){
         JwtBuilder builder = Jwts.builder()
                 .setHeader(createHeader())
-                .setClaims(createClaims(userDto))
-                .setSubject(String.valueOf(userDto.getEmail()))
+                .setClaims(createClaims(email,pw))
                 .signWith(SignatureAlgorithm.HS256, createSignature())
                 .setExpiration(createExpiredDate());
         return builder.compact();
@@ -51,11 +50,11 @@ public class JwtTokenProvider {
     }
 
     // 2. 사용자 정보를 기반으로 클래임 생성 메소드
-    private Map<String, Object> createClaims(LoginDto userDto) {
+    private Map<String, Object> createClaims(String email, String pw) {
         Map<String, Object> claims = new HashMap<>();
 
-        claims.put("user_email", userDto.getEmail());
-        claims.put("password", userDto.getPw());
+        claims.put("user_email", email);
+        claims.put("password", pw);
         return claims;
     }
 
@@ -76,6 +75,8 @@ public class JwtTokenProvider {
     public String getUserEmail(String token){
         return extractClaims(token, secretkey).get("user_email").toString();
     }
+    // Claims에서 password 꺼내기
+    public String getUserPassword(String token) { return extractClaims(token, secretkey).get("password").toString();}
 
     // 발급된 Token이 만료 시간이 지났는지 체크
     public boolean isExpired(String token){

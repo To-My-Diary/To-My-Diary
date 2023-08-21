@@ -19,7 +19,10 @@ public enum ResponseStatus {
     POST_PASSWORD_INCORRECT(false, HttpStatus.BAD_REQUEST.value(), "비밀번호가 틀렸습니다"),
     INVALID_JWT(false, HttpStatus.BAD_REQUEST.value(), "유효하지 않은 JWT입니다."),
     UNEXPECTED_ERROR(false, HttpStatus.BAD_REQUEST.value(), "예상치 못한 에러가 발생했습니다."),
-    NOT_FOUND_JWT(false, HttpStatus.BAD_REQUEST.value(), "JWT가 존재하지 않습니다.");
+    FAIL_AUTH_JWT(false, HttpStatus.BAD_REQUEST.value(), "JWT인증 실패입니다."),
+    DUPLCATE_USER(false, HttpStatus.BAD_REQUEST.value(), "이미 존재하는 사용자입니다."),
+    FAIL_JSON_PROCESS(false, HttpStatus.BAD_REQUEST.value(), "JSON 생성 실패"),
+    FAIL_JSON_MAPPING(false, HttpStatus.BAD_REQUEST.value(), "JSON 매핑 실패");
 
     private final boolean isSuccess;
     private final int code;

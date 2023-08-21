@@ -33,8 +33,7 @@ public class UserController {
     @GetMapping(value = "test")
     @ResponseBody
     public ResponseDto test(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication);
+        System.out.println("glgl");
         return new ResponseDto(ResponseStatus.SUCCESS);
     }
     //  회원가입 요청 - Post
@@ -71,7 +70,7 @@ public class UserController {
         }
 
         User user = userService.login(loginDto);
-        String token = jwtTokenProvider.createToken(loginDto);
+        String token = jwtTokenProvider.createToken(loginDto.getEmail(), loginDto.getPw());
 
         // Front에서 header값으로 받을 수 있도록 구현
         response.setHeader("Authorization", "Bearer "+token);

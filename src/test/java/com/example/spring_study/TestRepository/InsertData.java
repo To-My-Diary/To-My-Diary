@@ -6,9 +6,14 @@ import com.example.spring_study.Enum.EmotionEnum;
 import com.example.spring_study.Enum.GenderEnum;
 import com.example.spring_study.Repository.DiaryRepository;
 import com.example.spring_study.Repository.UserRepository;
+import com.example.spring_study.Security.CustomAuthenticationProvider;
+import com.example.spring_study.Security.CustomUserDetails;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @SpringBootTest
 public class InsertData {
@@ -18,6 +23,19 @@ public class InsertData {
     @Autowired
     private DiaryRepository diaryRepository;
 
+    @Autowired
+    CustomAuthenticationProvider customAuthenticationProvider;
+
+    @Test
+    public void logintest(){
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken("111@naver.com", "111");
+        Authentication authentication = customAuthenticationProvider.authenticate(usernamePasswordAuthenticationToken);
+        UserDetails user = (UserDetails) authentication.getPrincipal();
+        System.out.println(user.getUsername());
+        System.out.println(user.getPassword());
+        System.out.println(authentication.getPrincipal());
+        System.out.println(authentication.getName());
+    }
     @Test
     public void insertUser() {
         User user = User.builder()
