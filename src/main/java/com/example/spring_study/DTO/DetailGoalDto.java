@@ -1,6 +1,5 @@
 package com.example.spring_study.DTO;
 
-import com.example.spring_study.Entity.Goal;
 import com.example.spring_study.Enum.AchieveEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;

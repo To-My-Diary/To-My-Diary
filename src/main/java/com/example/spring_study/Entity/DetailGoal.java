@@ -1,6 +1,9 @@
 package com.example.spring_study.Entity;
 
+import com.example.spring_study.DTO.DetailGoalDto;
+import com.example.spring_study.DTO.GoalDto;
 import com.example.spring_study.Enum.AchieveEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,7 +31,16 @@ public class DetailGoal extends BaseEntity {
     @Column(nullable = false)
     private LocalDate planDate; // 목표 날짜
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    private String color; // 색깔
+
+    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name="goal_id")
     private Goal goal;
+
+    public void modifyDetialGoal(DetailGoalDto detailDto, String color) {
+        this.content = detailDto.getContent();
+        this.planDate = detailDto.getPlanDate();
+        this.color = color;
+    }
 }

@@ -57,6 +57,10 @@ class JwyTests {
                 .build();
         Goal goal = Goal.builder()
                 .content("제목")
+<<<<<<< HEAD
+=======
+                .achieveRate(10)
+>>>>>>> yujin_new_goal
                 .achieve(AchieveEnum.doing)
                 .build();
         user1.addGoalList(goal);
@@ -78,6 +82,10 @@ class JwyTests {
     void test3(){
         Goal goal1 = Goal.builder()
                 .content("제목222")
+<<<<<<< HEAD
+=======
+                .achieveRate(20)
+>>>>>>> yujin_new_goal
                 .achieve(AchieveEnum.fail)
                 .build();
         goalRepository.save(goal1);

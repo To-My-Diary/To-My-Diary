@@ -33,9 +33,10 @@ public class Schedule extends BaseEntity {
     @JsonIgnore  //서로를 참조하면서 무한 재귀함수가 실행 되게 된다. 해결방법 JsonIgnore
     private User user; // 사용자 (작성자)
 
-    public void update(String msg, AchieveEnum achieve) {
+    public void update(String msg, AchieveEnum achieve, LocalDateTime planDate) {
         this.msg = msg;
         this.achieve = achieve;
+        this.planDate = planDate;
     }
 
 }
