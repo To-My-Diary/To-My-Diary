@@ -14,6 +14,8 @@ import java.util.Optional;
 public interface GoalRepository extends JpaRepository<Goal, Long> {
     List<Goal> findAll();  // 모든 Gaol 조회 (생략 가능)
 
+    List<Goal> findAllByUser_Email(String email); // 사용자 이메일로 전체 목표 조회
+
     List<Goal> findAllByOrderByCreateDateDesc();  // 목표 날짜(내림차순) 조희
 
     List<Goal> findAllByOrderByCreateDateAsc();   // 목표 날짜(내림차순) 조희

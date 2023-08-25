@@ -12,6 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(originPatterns = "http://localhost:3000")
 public class GoalController {
     
     private final GoalService goalService;
@@ -58,14 +59,23 @@ public class GoalController {
 
     /** 목표 상세 페이지 */
     @GetMapping("/goal/detail/{goalId}")
-    public GoalDetailPageDto setGoalAchieve(@PathVariable("goalId") Long goalId) {
+    public GoalDetailPageDto detailGoalByPage(@PathVariable("goalId") Long goalId) {
         return goalService.getGoalDetailPage(goalId);
     }
 
     /** 달력에 목표 표시 */
     @GetMapping("/calendar/goal/{year}/{month}")
     public List<CalendarGoalDto> getCalendarGoal(@PathVariable("year") int year, @PathVariable("month") int month) {
+//        int y = Integer.parseInt(year);
+//        int m = Integer.parseInt(month);
         return goalService.getCalendarGoal(year, month);
+    }
+
+    /** 목표 상세 페이지 모아보기 */
+    /** 로그인 구현이 완성되면 쿠키로 사용자 이메일을 받도록 수정해야 함 */
+    @GetMapping("/goal/detail/all")
+    public List<GoalDetailPageDto> detailGoalsByPage(String email) {
+        return goalService.getAllGoalDetail("topjoy22@naver.com");
     }
 
 }

@@ -108,9 +108,13 @@ public class GoalService {
     }
 
     /** 목표 상세 페이지 모아보기 */
-    public void showAllGoalDetail() {
-        // 모든 목표 상세 페이지 리스트 가져오기
-
+    public List<GoalDetailPageDto> getAllGoalDetail(String email) {
+        List<Goal> allByUser_email = goalRepository.findAllByUser_Email(email);
+        List<GoalDetailPageDto> dtos = new ArrayList<>();
+        for (Goal goal : allByUser_email) {
+            dtos.add(getGoalDetailPage(goal.getGoalId()));
+        }
+        return dtos;
     }
 
     /** DetailGoalDto List -> DetailGoal Entity List */
