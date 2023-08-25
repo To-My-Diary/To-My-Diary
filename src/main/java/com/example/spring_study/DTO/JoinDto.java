@@ -25,7 +25,7 @@ public class JoinDto {
     @NotBlank(message = "연락처를 입력해주세요.")
     private String tel;
 
-    @NotNull(message = "성별을 선택해주세요.")
+    @NotNull(message = "성별을 입력해주세요.")
     private GenderEnum gender;
 
 }

@@ -10,6 +10,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -56,7 +57,6 @@ class JwyTests {
                 .build();
         Goal goal = Goal.builder()
                 .content("제목")
-                .achieve_rate(10)
                 .achieve(AchieveEnum.doing)
                 .build();
         user1.addGoalList(goal);
@@ -78,7 +78,6 @@ class JwyTests {
     void test3(){
         Goal goal1 = Goal.builder()
                 .content("제목222")
-                .achieve_rate(20)
                 .achieve(AchieveEnum.fail)
                 .build();
         goalRepository.save(goal1);
@@ -105,5 +104,10 @@ class JwyTests {
         arr.stream()
                 .map(e -> e.getAchieve())
                 .forEach(System.out::println);
+    }
+    @Test
+    void test6(){
+        User user = userRepository.findByEmail("1").get();
+        System.out.println(user.getPw());
     }
 }

@@ -4,11 +4,17 @@ import com.example.spring_study.Entity.Diary;
 import com.example.spring_study.Entity.User;
 import com.example.spring_study.Enum.EmotionEnum;
 import com.example.spring_study.Enum.GenderEnum;
+import com.example.spring_study.Jwt.JwtTokenProvider;
 import com.example.spring_study.Repository.DiaryRepository;
 import com.example.spring_study.Repository.UserRepository;
+import com.example.spring_study.Security.CustomAuthenticationProvider;
+import com.example.spring_study.Security.CustomUserDetails;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @SpringBootTest
 public class InsertData {
@@ -18,6 +24,29 @@ public class InsertData {
     @Autowired
     private DiaryRepository diaryRepository;
 
+    @Autowired
+    CustomAuthenticationProvider customAuthenticationProvider;
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
+
+    @Test
+    public void jwttest(){
+        String token="eyJyZWdEYXRlIjoxNjkyNzYyMjQ3MzU3LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2VtYWlsIjoiMTExQG5hdmVyLmNvbSIsInBhc3N3b3JkIjoicXdlcjEyMzQhIiwiZXhwIjoxNjkyNzkxMDQ3fQ.Y18GWIFIYr-HfVBm3wRt0ibTd8DSA89vQzYQSKAZnNs";
+        System.out.println(rs);
+
+        System.out.println(jwtTokenProvider.getUserEmail(token));
+
+    }
+    @Test
+    public void logintest(){
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken("111@naver.com", "111");
+        Authentication authentication = customAuthenticationProvider.authenticate(usernamePasswordAuthenticationToken);
+        UserDetails user = (UserDetails) authentication.getPrincipal();
+        System.out.println(user.getUsername());
+        System.out.println(user.getPassword());
+        System.out.println(authentication.getPrincipal());
+        System.out.println(authentication.getName());
+    }
     @Test
     public void insertUser() {
         User user = User.builder()
