@@ -4,6 +4,7 @@ import com.example.spring_study.Entity.Diary;
 import com.example.spring_study.Entity.User;
 import com.example.spring_study.Enum.EmotionEnum;
 import com.example.spring_study.Enum.GenderEnum;
+import com.example.spring_study.Jwt.JwtTokenProvider;
 import com.example.spring_study.Repository.DiaryRepository;
 import com.example.spring_study.Repository.UserRepository;
 import com.example.spring_study.Security.CustomAuthenticationProvider;
@@ -25,7 +26,17 @@ public class InsertData {
 
     @Autowired
     CustomAuthenticationProvider customAuthenticationProvider;
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
 
+    @Test
+    public void jwttest(){
+        String token="eyJyZWdEYXRlIjoxNjkyNzYyMjQ3MzU3LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2VtYWlsIjoiMTExQG5hdmVyLmNvbSIsInBhc3N3b3JkIjoicXdlcjEyMzQhIiwiZXhwIjoxNjkyNzkxMDQ3fQ.Y18GWIFIYr-HfVBm3wRt0ibTd8DSA89vQzYQSKAZnNs";
+        System.out.println(rs);
+
+        System.out.println(jwtTokenProvider.getUserEmail(token));
+
+    }
     @Test
     public void logintest(){
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken("111@naver.com", "111");

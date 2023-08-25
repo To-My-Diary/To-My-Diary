@@ -1,6 +1,7 @@
 package com.example.spring_study.Controller;
 
 import com.example.spring_study.DTO.Response.ResponseDto;
+import com.example.spring_study.DTO.Response.ResponseStatus;
 import com.example.spring_study.Entity.User;
 import com.example.spring_study.Model.KakaoOAuthToken;
 import com.example.spring_study.Model.KakaoUserInfo;
@@ -32,10 +33,18 @@ public class AuthController {
 
     private final AuthService authService;
 
+    // 카카오 로그아웃 callback url
+    @GetMapping(value = "logout")
+    @ResponseBody
+    public ResponseDto kakaoLogout(){
+        return new ResponseDto<>(ResponseStatus.SUCCESS);
+    }
+
     // 카카오 로그인 인증 callback url
     @GetMapping(value = "kakao/callback")
     @ResponseBody
     public ResponseDto kakaoCallback(String code){
+        System.out.println("실행");
         // 인가 권한 체크
         ResponseEntity<String> response = authService.getAuthorizeToken(code);
 

@@ -11,6 +11,7 @@ import com.example.spring_study.Util.UserValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -33,7 +34,14 @@ public class UserController {
     @GetMapping(value = "test")
     @ResponseBody
     public ResponseDto test(){
-        System.out.println("glgl");
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
+        return new ResponseDto(ResponseStatus.SUCCESS);
+    }
+    @GetMapping(value = "test2")
+    @ResponseBody
+    public ResponseDto test2(@AuthenticationPrincipal String userEmail){    // Security Session(Security Context Holder에 저장되었는지 email을 매개변수로 받음)
+        System.out.println("userEmail : "+userEmail);
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
         return new ResponseDto(ResponseStatus.SUCCESS);
     }
     //  회원가입 요청 - Post

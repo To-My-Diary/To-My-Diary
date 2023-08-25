@@ -36,14 +36,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         System.out.println("jwtTokenFilter");
         String token = request.getHeader("Authorization");
         try{
-        if(token == null || !token.startsWith("Bearer ")){
-            throw new BaseException(INVALID_JWT);
-        }
-        token = token.replace("Bearer ","");
+            // String.utils()를 통해서 유효성 검사 가능
+            if(token == null || !token.startsWith("Bearer ")){
+                throw new BaseException(INVALID_JWT);
+            }
+            token = token.replace("Bearer ","");
 
-        String email = jwtTokenProvider.getUserEmail(token);
-        String password = jwtTokenProvider.getUserPassword(token);
-        System.out.println(email +" / "+password);
+            String email = jwtTokenProvider.getUserEmail(token);
+            String password = jwtTokenProvider.getUserPassword(token);
+            System.out.println(email +" / "+password);
 
             if(email != null){
                 User user = userRepository.findByEmail(email).get();

@@ -22,7 +22,9 @@ public enum ResponseStatus {
     FAIL_AUTH_JWT(false, HttpStatus.BAD_REQUEST.value(), "JWT인증 실패입니다."),
     DUPLCATE_USER(false, HttpStatus.BAD_REQUEST.value(), "이미 존재하는 사용자입니다."),
     FAIL_JSON_PROCESS(false, HttpStatus.BAD_REQUEST.value(), "JSON 생성 실패"),
-    FAIL_JSON_MAPPING(false, HttpStatus.BAD_REQUEST.value(), "JSON 매핑 실패");
+    FAIL_JSON_MAPPING(false, HttpStatus.BAD_REQUEST.value(), "JSON 매핑 실패"),
+    LOGIN_FAIL(false, HttpStatus.FORBIDDEN.value(), "로그인 실패입니다."),
+    DUPLI_AUTHORIZATION_CODE(false,HttpStatus.FORBIDDEN.value(), "중복된 인가 코드입니다.");
 
     private final boolean isSuccess;
     private final int code;
