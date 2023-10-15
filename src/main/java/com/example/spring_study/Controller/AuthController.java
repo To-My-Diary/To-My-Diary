@@ -27,21 +27,20 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
 
     // 카카오 로그아웃 callback url
-    @GetMapping(value = "logout")
+    @GetMapping(value = "/auth/logout")
     @ResponseBody
     public ResponseDto kakaoLogout(){
         return new ResponseDto<>(ResponseStatus.SUCCESS);
     }
 
     // 카카오 로그인 인증 callback url
-    @GetMapping(value = "kakao/callback")
+    @GetMapping(value = "/auth/login")
     @ResponseBody
     public ResponseDto kakaoCallback(String code){
         System.out.println("실행");
