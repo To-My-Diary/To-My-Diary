@@ -42,6 +42,7 @@ public class AuthService {
 
     private final CustomAuthenticationProvider customAuthenticationProvider;
     public ResponseEntity<String> getAuthorizeToken(String code) {
+        System.out.println("code"+code);
         RestTemplate restTemplate = new RestTemplate();
         try{
             //        Http Header 객체 생성
