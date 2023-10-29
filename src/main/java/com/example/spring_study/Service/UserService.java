@@ -52,11 +52,11 @@ public class UserService {
         return userRepository.findByEmail(user_email).get();
     }
 
+    @Transactional(readOnly = true)
     public User login(LoginDto loginDto) {
         User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow(
                 () -> new BaseException(POST_EMAIL_INCORRECT)
         );
-
         if (!bCryptPasswordEncoder.matches(loginDto.getPw(), user.getPw())) {
             throw new BaseException(POST_PASSWORD_INCORRECT);
         }
