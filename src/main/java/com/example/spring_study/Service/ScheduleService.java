@@ -25,7 +25,7 @@ public class ScheduleService {
 
 
     public List<Schedule> getSchedule(Principal principal) {
-        return scheduleRepository.getScheduleOrderByAchieve(principal.getName());
+        return scheduleRepository.getSchedules(principal.getName());
     }
 
     // 메인화면 Post 요청 처리

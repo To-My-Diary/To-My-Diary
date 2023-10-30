@@ -2,6 +2,7 @@ package com.example.spring_study.Repository;
 
 import com.example.spring_study.Entity.Schedule;
 import com.example.spring_study.Enum.AchieveEnum;
+import com.example.spring_study.QueryDsl.ScheduleRepositoryCustom;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
+public interface ScheduleRepository extends JpaRepository<Schedule, Long>, ScheduleRepositoryCustom {
     /**
      * 스케줄 아이디로 찾기
      */
