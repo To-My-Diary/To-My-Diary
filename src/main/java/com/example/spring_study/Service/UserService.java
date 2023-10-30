@@ -36,15 +36,7 @@ public class UserService {
         } else if (!userRepository.findByTel(joinDto.getTel()).isEmpty()) {
             throw new BaseException(POST_TEL_DUPLICATE);
         }
-        User user = User.builder()
-                .email(joinDto.getEmail())
-                .pw(bCryptPasswordEncoder.encode(joinDto.getPw()))
-                .name(joinDto.getName())
-                .tel(joinDto.getTel())
-                .gender(joinDto.getGender())
-                .role("ROLE_USER")
-                .build();
-        userRepository.save(user);
+        userRepository.save(dtoToEntity(joinDto));
         return new ResponseDto(SUCCESS);
     }
 
@@ -69,5 +61,16 @@ public class UserService {
         SecurityContextHolder.setContext(securityContext);
 
         return user;
+    }
+
+    private User dtoToEntity(JoinDto joinDto) {
+        return User.builder()
+                .email(joinDto.getEmail())
+                .pw(bCryptPasswordEncoder.encode(joinDto.getPw()))
+                .name(joinDto.getName())
+                .tel(joinDto.getTel())
+                .gender(joinDto.getGender())
+                .role("ROLE_USER")
+                .build();
     }
 }
