@@ -28,9 +28,8 @@ public class ScheduleService {
         return scheduleRepository.getSchedules(principal.getName());
     }
 
-    // 메인화면 Post 요청 처리
-    public List<Schedule> getSchedule(ClickDate date) {
-        return scheduleRepository.getClickDateSchedules("111@naver.com",
+    public List<Schedule> getUniqueSchedule(Principal principal, ClickDate date) {
+        return scheduleRepository.getUniqueSchedules(principal.getName(),
                 LocalDate.of(date.getYear(), date.getMonth(), date.getDay()));
     }
 

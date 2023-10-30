@@ -1,5 +1,6 @@
 package com.example.spring_study.Controller;
 
+import com.example.spring_study.DTO.ClickDate;
 import com.example.spring_study.DTO.Response.ResponseDto;
 import com.example.spring_study.DTO.Response.ResponseStatus;
 import com.example.spring_study.DTO.ScheduleDto;
@@ -24,6 +25,12 @@ public class ScheduleController {
     @GetMapping(value = "/get/schedule")
     public ResponseDto getSchedules(Principal principal) {
         List<Schedule> scheduleList = scheduleService.getSchedule(principal);
+        return new ResponseDto(scheduleList);
+    }
+
+    @PostMapping(value = "/get/schedule")
+    public ResponseDto getUniqueSchedules(Principal principal, @RequestBody ClickDate clickDate) {
+        List<Schedule> scheduleList = scheduleService.getUniqueSchedule(principal, clickDate);
         return new ResponseDto(scheduleList);
     }
 
