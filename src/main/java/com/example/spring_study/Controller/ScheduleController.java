@@ -3,6 +3,8 @@ package com.example.spring_study.Controller;
 import com.example.spring_study.DTO.ScheduleDto;
 import com.example.spring_study.Service.ScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -15,6 +17,9 @@ public class ScheduleController {
     /** 할 일 저장 */
     @PostMapping("/save/schedule")
     public void saveDiary(@RequestBody ScheduleDto scheduleDto) {
+        SecurityContext context = SecurityContextHolder.getContext();
+
+        System.out.print(context);
 
         scheduleService.saveSchedule(scheduleDto);
     }
