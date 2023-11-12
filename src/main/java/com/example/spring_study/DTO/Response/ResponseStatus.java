@@ -24,14 +24,15 @@ public enum ResponseStatus {
     FAIL_JSON_PROCESS(false, HttpStatus.BAD_REQUEST.value(), "JSON 생성 실패"),
     FAIL_JSON_MAPPING(false, HttpStatus.BAD_REQUEST.value(), "JSON 매핑 실패"),
     LOGIN_FAIL(false, HttpStatus.FORBIDDEN.value(), "로그인 실패입니다."),
-    DUPLI_AUTHORIZATION_CODE(false,HttpStatus.FORBIDDEN.value(), "중복된 인가 코드입니다.");
+    DUPLI_AUTHORIZATION_CODE(false, HttpStatus.FORBIDDEN.value(), "중복된 인가 코드입니다."),
+    NO_SCHEDULE(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 스케줄입니다.");
 
     private final boolean isSuccess;
     private final int code;
     private final String message;
 
 
-    private ResponseStatus(boolean isSuccess, int code, String message){
+    private ResponseStatus(boolean isSuccess, int code, String message) {
         this.isSuccess = isSuccess;
         this.code = code;
         this.message = message;
