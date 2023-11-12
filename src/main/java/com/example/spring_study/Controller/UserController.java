@@ -21,23 +21,24 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
 
     //  WebSecurity 적용 test
-    @GetMapping(value = "test")
+    @GetMapping(value = "/user/test")
     @ResponseBody
     public ResponseDto test(){
         System.out.println(SecurityContextHolder.getContext().getAuthentication());
         return new ResponseDto(ResponseStatus.SUCCESS);
     }
-    @GetMapping(value = "test2")
+    @GetMapping(value = "/user/test2")
     @ResponseBody
     public ResponseDto test2(@AuthenticationPrincipal String userEmail){    // Security Session(Security Context Holder에 저장되었는지 email을 매개변수로 받음)
         System.out.println("userEmail : "+userEmail);
@@ -45,7 +46,7 @@ public class UserController {
         return new ResponseDto(ResponseStatus.SUCCESS);
     }
     //  회원가입 요청 - Post
-    @PostMapping(value="join")
+    @PostMapping(value="/user/join")
     @ResponseBody
     public ResponseDto join(@Valid @RequestBody JoinDto joinDto, BindingResult bindingResult){
         List<String> error_list = UserValidation.getValidationError(bindingResult);
@@ -69,7 +70,7 @@ public class UserController {
         return new ResponseDto(ResponseStatus.JOIN_SUCCESS);
     }
 
-    @PostMapping(value = "login")
+    @PostMapping(value = "/user/login")
     @ResponseBody
     public ResponseDto login(@Valid @RequestBody LoginDto loginDto, BindingResult bindingResult, HttpServletResponse response){
         List<String> error_list = UserValidation.getValidationError(bindingResult);
@@ -84,4 +85,11 @@ public class UserController {
         response.setHeader("Authorization", "Bearer "+token);
         return new ResponseDto(ResponseStatus.SUCCESS);
     }
+    @GetMapping("/user")
+    @ResponseBody
+    public ResponseDto getUser(Principal principal){
+        User user = userService.getUserByEmail(principal.getName());
+        return new ResponseDto(user);
+    }
+
 }
