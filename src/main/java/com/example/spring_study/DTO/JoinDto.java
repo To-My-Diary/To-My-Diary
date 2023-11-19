@@ -3,11 +3,15 @@ package com.example.spring_study.DTO;
 import com.example.spring_study.Enum.GenderEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class JoinDto {
     @NotBlank(message = "이메일은 필수 입력 사항입니다.")

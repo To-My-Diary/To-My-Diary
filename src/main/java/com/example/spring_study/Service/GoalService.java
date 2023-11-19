@@ -50,18 +50,19 @@ public class GoalService {
     }
 
     /** 한 달 메인 목표 모아 보여주기 */
-    public List<Goal> goalsByMonth(int year, int month) {
+    public List<Goal> goalsByMonth(int year, int month, String userId) {
         List<LocalDate> dates = getStartAndEnd(year, month);
-        return goalRepository.findAllByPlanDateBetween(dates.get(0), dates.get(1));
+        return goalRepository.findAllByPlanDateBetweenAndUser_Email(dates.get(0), dates.get(1), userId);
     }
 
     /** 한 달 상세 목표 모아 보여주기 */
-    public List<DetailGoal> detailGoalsByMonth(int year, int month) {
+    public List<DetailGoal> detailGoalsByMonth(int year, int month, String userId) {
         List<LocalDate> dates = getStartAndEnd(year, month);
-        return detailGoalRepository.findAllByPlanDateBetween(dates.get(0), dates.get(1));
+        return detailGoalRepository.findAllByPlanDateBetweenAndGoal_User_Email(dates.get(0), dates.get(1), userId);
     }
 
     /** 메인 목표 달성 여부 설정 */
+    @Transactional
     public void setGoalAchieve(GoalDto goalDto) {
         Goal goal = goalRepository.findById(goalDto.getGoalId()).get();
         goal.update(goalDto.getAchieve());
@@ -87,11 +88,11 @@ public class GoalService {
     }
 
     /** 달력에 목표 표시하기 */
-    public List<CalendarGoalDto> getCalendarGoal(int year, int month) {
+    public List<CalendarGoalDto> getCalendarGoal(int year, int month, String userId) {
         // 한 달 메인 목표 가져오기
-        List<Goal> goals = goalsByMonth(year, month);
+        List<Goal> goals = goalsByMonth(year, month, userId);
         // 한 달 목표 상세 가져오기
-        List<DetailGoal> detailGoals = detailGoalsByMonth(year, month);
+        List<DetailGoal> detailGoals = detailGoalsByMonth(year, month, userId);
         List<CalendarGoalDto> days = new ArrayList<>();
 
         // 색깔과 날짜 담기 - 메인 목표
