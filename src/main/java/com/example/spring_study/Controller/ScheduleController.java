@@ -9,6 +9,9 @@ import com.example.spring_study.Service.ScheduleService;
 import java.security.Principal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ScheduleController {
     private final ScheduleService scheduleService;
 
+    /** 할 일 저장 */
+    @PostMapping("/save/schedule")
+    public void saveDiary(@RequestBody ScheduleDto scheduleDto) {
+        SecurityContext context = SecurityContextHolder.getContext();
+
+        System.out.print(context);
     @GetMapping(value = "/get/schedule")
     public ResponseDto getSchedules(Principal principal) {
         List<Schedule> scheduleList = scheduleService.getSchedule(principal);
