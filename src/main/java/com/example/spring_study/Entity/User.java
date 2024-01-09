@@ -25,12 +25,12 @@ public class User extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
     private String role;
-    @Builder.Default  // 빌더 패턴 사용시 초기화 설정을 위한 어노테이션
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    public List<Goal> goalList = new ArrayList<>();
+//    @Builder.Default  // 빌더 패턴 사용시 초기화 설정을 위한 어노테이션
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    public List<Goal> goalList = new ArrayList<>();
     public void addGoalList(Goal goal){
         goal.setUser(this);
-        this.goalList.add(goal);
+//        this.goalList.add(goal);
     }
 
     public List<String> getRoleList() {

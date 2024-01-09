@@ -28,5 +28,5 @@ public interface GoalRepository extends JpaRepository<Goal, Long> {
     Goal findByGoalId(Long goalId);
 
     /** 특정 달의 목표 가져오기 */
-    List<Goal> findAllByPlanDateBetween(LocalDate start, LocalDate end);
+    List<Goal> findAllByPlanDateBetweenAndUser_Email(LocalDate start, LocalDate end, String userId);
 }

@@ -8,6 +8,8 @@ import com.example.spring_study.Entity.Goal;
 import com.example.spring_study.Service.GoalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -40,14 +42,14 @@ public class GoalController {
 
     /** 달마다 메인 목표 리스트 가져오기 */
     @GetMapping("/goal/{year}/{month}")
-    public List<Goal> goalsByMonth(@PathVariable("year") int year, @PathVariable("month") int month) {
-        return goalService.goalsByMonth(year, month);
+    public List<Goal> goalsByMonth(@PathVariable("year") int year, @PathVariable("month") int month, Principal principal) {
+        return goalService.goalsByMonth(year, month, principal.getName());
     }
 
     /** 달마다 목표 상세 리스트 가져오기 */
     @GetMapping("/detail/goal/{year}/{month}")
-    public List<DetailGoal> detailGoalsByMonth(@PathVariable("year") int year, @PathVariable("month") int month) {
-        return goalService.detailGoalsByMonth(year, month);
+    public List<DetailGoal> detailGoalsByMonth(@PathVariable("year") int year, @PathVariable("month") int month, Principal principal) {
+        return goalService.detailGoalsByMonth(year, month, principal.getName());
     }
 
     /** 메인 목표 달성 여부 설정 */
@@ -65,10 +67,10 @@ public class GoalController {
 
     /** 달력에 목표 표시 */
     @GetMapping("/calendar/goal/{year}/{month}")
-    public List<CalendarGoalDto> getCalendarGoal(@PathVariable("year") int year, @PathVariable("month") int month) {
+    public List<CalendarGoalDto> getCalendarGoal(@PathVariable("year") int year, @PathVariable("month") int month, Principal principal) {
 //        int y = Integer.parseInt(year);
 //        int m = Integer.parseInt(month);
-        return goalService.getCalendarGoal(year, month);
+        return goalService.getCalendarGoal(year, month, principal.getName());
     }
 
     /** 목표 상세 페이지 모아보기 */

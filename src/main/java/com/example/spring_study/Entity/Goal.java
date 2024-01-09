@@ -1,6 +1,7 @@
 package com.example.spring_study.Entity;
 
 import com.example.spring_study.DTO.GoalDto;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,6 +44,7 @@ public class Goal extends BaseEntity {
     private User user;
 
     @OneToMany(mappedBy = "goal")
+    @JsonManagedReference
     private List<DetailGoal> detailGoals = new ArrayList<>(); // 상세 목표 리스트
 
     public void update(AchieveEnum achieve) {
