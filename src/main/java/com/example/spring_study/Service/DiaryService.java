@@ -5,11 +5,10 @@ import com.example.spring_study.Entity.Diary;
 import com.example.spring_study.Entity.User;
 import com.example.spring_study.Repository.DiaryRepository;
 import com.example.spring_study.Repository.UserRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +18,7 @@ public class DiaryService {
     private final UserRepository userRepository;
 
 
-    public Diary searchById(Long id){ //데이터 검색
+    public Diary searchById(Long id) { //데이터 검색
         return diaryRepository.findByDiaryId(id);
         //return DiaryRepository.findByDiaryId(id).orElseThrow(ExceptionBoard.NOT_FOUND_POST::getException).counting();
     }
@@ -32,26 +31,29 @@ public class DiaryService {
             System.out.printf(i.getContent());
         });
 
-
         return allByUserEmail;
     }
 
-    /** 일기 저장 */
-    public void saveDiary(DiaryDto diaryDto, String name) {
+    /**
+     * 일기 저장
+     */
+    public long saveDiary(DiaryDto diaryDto, String name) {
         User user = userRepository.findByEmail(name).get();
         diaryDto.setUserId(user.getEmail());
         try {
             diaryRepository.save(dtoToEntity(diaryDto));
             System.out.println("[" + diaryDto.getSubject() + "] 일기가 저장됐습니다.");
-        }
-
-        catch (Exception e) {
+            return diaryDto.getDiaryId();
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        return 0;
 
     }
 
-    /** 일기 수정 */
+    /**
+     * 일기 수정
+     */
     @Transactional
     public void modifyDiary(DiaryDto diaryDto, String name) {
         User user = userRepository.findByEmail(name).get();
@@ -62,13 +64,17 @@ public class DiaryService {
         System.out.println("[" + diaryDto.getSubject() + "] 일기가 수정됐습니다.");
     }
 
-    /** 일기 삭제 */
+    /**
+     * 일기 삭제
+     */
     public void deleteDiary(Long diaryId) {
         diaryRepository.deleteById(diaryId);
         System.out.println(diaryId + " 번 일기가 삭제됐습니다.");
     }
 
-    /** Dto -> Entity */
+    /**
+     * Dto -> Entity
+     */
     Diary dtoToEntity(DiaryDto dto) {
         Diary diary = Diary.builder()
 //                .diaryId(dto.getDiaryId())

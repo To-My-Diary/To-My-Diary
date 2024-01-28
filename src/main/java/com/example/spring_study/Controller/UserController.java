@@ -3,14 +3,12 @@ package com.example.spring_study.Controller;
 import com.example.spring_study.DTO.JoinDto;
 import com.example.spring_study.DTO.LoginDto;
 import com.example.spring_study.DTO.Response.ResponseDto;
-import com.example.spring_study.DTO.Response.ResponseStatus;
 import com.example.spring_study.Entity.User;
 import com.example.spring_study.Jwt.JwtTokenProvider;
 import com.example.spring_study.Service.UserService;
 import com.example.spring_study.Util.UserValidation;
 import java.security.Principal;
 import java.util.List;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -55,12 +53,12 @@ public class UserController {
         String token = jwtTokenProvider.createToken(loginDto.getEmail(), loginDto.getPw());
         // Front에서 header값으로 받을 수 있도록 구현
 //        response.setHeader("Authorization", "Bearer " + token);
-        Cookie cookie = new Cookie("token", token);
-        cookie.setMaxAge(86400); // 쿠키 유효 기간을 24시간으로 설정
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
-        return new ResponseDto(ResponseStatus.SUCCESS);
+//        Cookie cookie = new Cookie("token", token);
+//        cookie.setMaxAge(86400); // 쿠키 유효 기간을 24시간으로 설정
+//        cookie.setPath("/");
+//        cookie.setHttpOnly(true);
+//        response.addCookie(cookie);
+        return new ResponseDto(token);
     }
 
     @GetMapping("/user")

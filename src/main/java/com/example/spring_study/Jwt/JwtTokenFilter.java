@@ -10,7 +10,6 @@ import com.example.spring_study.Security.CustomUserDetails;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,27 +33,38 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         System.out.println("jwtTokenFilter");
-        Cookie[] cookies = request.getCookies();
-        String token = "";
+
+        String token = request.getHeader("Authorization");
         try {
-            if (cookies != null) {
-                for (Cookie cookie : cookies) {
-                    if (cookie.getName().equals("token")) {
-                        token = cookie.getValue();
-                    }
-                }
+            // String.utils()를 통해서 유효성 검사 가능
+            if (token == null || !token.startsWith("Bearer ")) {
+                throw new BaseException(INVALID_JWT);
+//        Cookie[] cookies = request.getCookies();
+//        String token = "";
+//        try {
+//            if (cookies != null) {
+//                for (Cookie cookie : cookies) {
+//                    if (cookie.getName().equals("token")) {
+//                        token = cookie.getValue();
+//                    }
+//                }
+//            }
             }
+            token = token.replace("Bearer ", "");
             String email = jwtTokenProvider.getUserEmail(token);
             String password = jwtTokenProvider.getUserPassword(token);
             System.out.println(email + " / " + password);
-            
+
             if (email != null) {
                 User user = userRepository.findByEmail(email).get();
                 CustomUserDetails userDetails = new CustomUserDetails(user);
+//                Authentication authentication = new UsernamePasswordAuthenticationToken(email, password,
+//                        userDetails.getAuthorities());
                 Authentication authentication = new UsernamePasswordAuthenticationToken(email, password,
                         userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
+
         } catch (BaseException e) {
             throw new BaseException(INVALID_JWT);
         } catch (Exception e) {

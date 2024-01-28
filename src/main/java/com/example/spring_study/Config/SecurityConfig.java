@@ -1,8 +1,8 @@
 package com.example.spring_study.Config;
 
+import com.example.spring_study.Jwt.JwtExceptionFilter;
 import com.example.spring_study.Jwt.JwtTokenFilter;
 import com.example.spring_study.Jwt.JwtTokenProvider;
-import com.example.spring_study.Jwt.JwtExceptionFilter;
 import com.example.spring_study.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
-
 //Spring Security 환경설정을 구성하기 위한 클래스이다.
 //웹 서브시가 로드 될 때 Spring Container의해 관리가 되는 클래스이며 사용자에 대한 인증과 인가에 대한 구성을 Bean 메소드로 주입을 한다.
 @Configuration
@@ -27,14 +26,20 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
+    private final CorsConfig corsConfig;
+
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(){
+    public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> {
-            web.ignoring().antMatchers("/","/auth/**","/user/login","/user/join", "/swagger-ui/**","/v3/api-docs/**");
+            web.ignoring()
+                    .antMatchers("/", "/auth/**", "/user/login", "/user/join", "/swagger-ui/**", "/v3/api-docs/**")
+                    .antMatchers("/upload");
+
         };
     }
+
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
                 .requestMatchers(
                         new AntPathRequestMatcher("/weather/api**")).hasRole("USER")
@@ -52,10 +57,11 @@ public class SecurityConfig {
                 // 세션기반의 인증기반을 사용하지 않는다.
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider, userRepository), UsernamePasswordAuthenticationFilter.class)
+                .addFilter(corsConfig.corsFilter())
+                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider, userRepository),
+                        UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtExceptionFilter(), JwtTokenFilter.class);
-                // Spring Security Custom Filter 적용 - Form '인증'에 대해서 적용
-
+        // Spring Security Custom Filter 적용 - Form '인증'에 대해서 적용
 
         return http.build();
     }

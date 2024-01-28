@@ -1,7 +1,5 @@
 package com.example.spring_study.Service;
 
-import static com.example.spring_study.DTO.Response.ResponseStatus.NO_SCHEDULE;
-
 import com.example.spring_study.DTO.ClickDate;
 import com.example.spring_study.DTO.ScheduleDto;
 import com.example.spring_study.Entity.Schedule;
@@ -9,13 +7,15 @@ import com.example.spring_study.Exception.BaseException;
 import com.example.spring_study.Exception.NotFoundScheduleException;
 import com.example.spring_study.Repository.ScheduleRepository;
 import com.example.spring_study.Repository.UserRepository;
-import java.security.Principal;
-import java.time.LocalDate;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.security.Principal;
+import java.util.List;
+
+import static com.example.spring_study.DTO.Response.ResponseStatus.NO_SCHEDULE;
 
 @Service
 @RequiredArgsConstructor
@@ -25,12 +25,13 @@ public class ScheduleService {
 
 
     public List<Schedule> getSchedule(Principal principal) {
-        return scheduleRepository.getSchedules(principal.getName());
+        return scheduleRepository.findAll();
     }
 
     public List<Schedule> getUniqueSchedule(Principal principal, ClickDate date) {
-        return scheduleRepository.getUniqueSchedules(principal.getName(),
-                LocalDate.of(date.getYear(), date.getMonth(), date.getDay()));
+//        return scheduleRepository.getUniqueSchedules(principal.getName(),
+//                LocalDate.of(date.getYear(), date.getMonth(), date.getDay()));
+        return scheduleRepository.findAll();
     }
 
     /**

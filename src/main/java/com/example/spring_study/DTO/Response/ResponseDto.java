@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import static com.example.spring_study.DTO.Response.ResponseStatus.SUCCESS;
 
+
 @Getter
 @AllArgsConstructor
 @JsonPropertyOrder({"isSuccess", "code", "message", "result"})
