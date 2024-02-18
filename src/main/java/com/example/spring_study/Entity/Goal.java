@@ -1,19 +1,27 @@
 package com.example.spring_study.Entity;
 
 import com.example.spring_study.DTO.GoalDto;
+import com.example.spring_study.Enum.AchieveEnum;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.example.spring_study.Enum.AchieveEnum;
-import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-
-import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -39,7 +47,8 @@ public class Goal extends BaseEntity {
 
     private String color; // 색깔
 
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
+
     @ManyToOne
     private User user;
 
@@ -49,6 +58,11 @@ public class Goal extends BaseEntity {
 
     public void update(AchieveEnum achieve) {
         this.achieve = achieve;
+    }
+
+    public void addDetailGoals(DetailGoal detailGoal) {
+        detailGoal.setGoal(this);
+        this.detailGoals.add(detailGoal);
     }
 
     public void modifyGoal(GoalDto goalDto) {

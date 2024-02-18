@@ -4,10 +4,6 @@ import com.example.spring_study.Entity.Diary;
 import com.example.spring_study.Entity.Image;
 import com.example.spring_study.Repository.DiaryRepository;
 import com.example.spring_study.Repository.FileRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -15,6 +11,9 @@ import java.util.Optional;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +40,7 @@ public class FileService {
 
                 fileRepository.save(image);
             } catch (IOException e) {
-                // 에러 처리
+                e.printStackTrace();
             }
         });
     }

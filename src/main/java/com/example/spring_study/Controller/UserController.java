@@ -7,7 +7,6 @@ import com.example.spring_study.Entity.User;
 import com.example.spring_study.Jwt.JwtTokenProvider;
 import com.example.spring_study.Service.UserService;
 import com.example.spring_study.Util.UserValidation;
-import java.security.Principal;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -15,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,6 +38,7 @@ public class UserController {
         return userService.create(joinDto);
     }
 
+    // 로그인
     @PostMapping(value = "/user/login")
     @ResponseBody
     public ResponseDto login(@Valid @RequestBody LoginDto loginDto, BindingResult bindingResult,
@@ -51,21 +50,14 @@ public class UserController {
 
         User user = userService.login(loginDto);
         String token = jwtTokenProvider.createToken(loginDto.getEmail(), loginDto.getPw());
-        // Front에서 header값으로 받을 수 있도록 구현
-//        response.setHeader("Authorization", "Bearer " + token);
-//        Cookie cookie = new Cookie("token", token);
-//        cookie.setMaxAge(86400); // 쿠키 유효 기간을 24시간으로 설정
-//        cookie.setPath("/");
-//        cookie.setHttpOnly(true);
-//        response.addCookie(cookie);
         return new ResponseDto(token);
     }
 
-    @GetMapping("/user")
-    @ResponseBody
-    public ResponseDto getUser(Principal principal) {
-        User user = userService.getUserByEmail(principal.getName());
-        return new ResponseDto(user);
-    }
+//    @GetMapping("/user")
+//    @ResponseBody
+//    public ResponseDto getUser(Principal principal) {
+//        User user = userService.getUserByEmail(principal.getName());
+//        return new ResponseDto(user);
+//    }
 
 }

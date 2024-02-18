@@ -1,14 +1,11 @@
 package com.example.spring_study.Repository;
 
 import com.example.spring_study.Entity.Goal;
-import com.example.spring_study.Entity.User;
 import com.example.spring_study.Enum.AchieveEnum;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GoalRepository extends JpaRepository<Goal, Long> {
@@ -24,9 +21,13 @@ public interface GoalRepository extends JpaRepository<Goal, Long> {
 
     List<Goal> findByUserEmail(String email);
 
-    /** 목표 아이디로 가져오기 */
+    /**
+     * 목표 아이디로 가져오기
+     */
     Goal findByGoalId(Long goalId);
 
-    /** 특정 달의 목표 가져오기 */
+    /**
+     * 특정 달의 목표 가져오기
+     */
     List<Goal> findAllByPlanDateBetweenAndUser_Email(LocalDate start, LocalDate end, String userId);
 }

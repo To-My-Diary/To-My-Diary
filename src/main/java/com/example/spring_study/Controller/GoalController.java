@@ -33,6 +33,12 @@ public class GoalController {
         return new ResponseDto<>(ResponseStatus.SUCCESS);
     }
 
+//    @PostMapping("save/detail/goal")
+//    public ResponseDto saveDetailGoal(@RequestBody DetailGoalDto detailGoalDto) {
+//        goalService.createDetailGoal(detailGoalDto);
+//        return new ResponseDto<>(ResponseStatus.SUCCESS);
+//    }
+
     /**
      * 목표 수정
      */

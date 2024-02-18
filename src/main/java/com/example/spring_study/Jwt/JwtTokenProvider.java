@@ -1,22 +1,20 @@
 package com.example.spring_study.Jwt;
 
-import com.example.spring_study.DTO.LoginDto;
-import com.example.spring_study.Entity.User;
 import com.example.spring_study.Service.UserService;
-import io.jsonwebtoken.*;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.DatatypeConverter;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 // Custom Provider 생성
 // 해당 클래스는 JWT에서 사용되는 토큰 관련 유틸들을 관리하는 클래스입니다.
@@ -31,21 +29,21 @@ public class JwtTokenProvider {
     private static long expireTimeMs = 1000 * 10;
 
     // Jwt 토큰 생성 메소드
-    public String createToken(String email, String pw){
+    public String createToken(String email, String pw) {
         JwtBuilder builder = Jwts.builder()
                 .setHeader(createHeader())
-                .setClaims(createClaims(email,pw))
+                .setClaims(createClaims(email, pw))
                 .signWith(SignatureAlgorithm.HS256, createSignature())
                 .setExpiration(createExpiredDate());
         return builder.compact();
     }
 
     // 1. Header값 생성해주는 메소드
-    private Map<String, Object> createHeader(){
+    private Map<String, Object> createHeader() {
         Map<String, Object> header = new HashMap<>();
         header.put("typ", "JWT");
         header.put("alg", "HS256");
-        header.put("regDate",System.currentTimeMillis());
+        header.put("regDate", System.currentTimeMillis());
         return header;
     }
 
@@ -72,25 +70,24 @@ public class JwtTokenProvider {
     }
 
     // Claims에서 user_email 꺼내기
-    public String getUserEmail(String token){
+    public String getUserEmail(String token) {
         return extractClaims(token, secretkey).get("user_email").toString();
     }
+
     // Claims에서 password 꺼내기
-    public String getUserPassword(String token) { return extractClaims(token, secretkey).get("password").toString();}
+    public String getUserPassword(String token) {
+        return extractClaims(token, secretkey).get("password").toString();
+    }
 
     // 발급된 Token이 만료 시간이 지났는지 체크
-    public boolean isExpired(String token){
+    public boolean isExpired(String token) {
         Date expiredDate = extractClaims(token, secretkey).getExpiration();
         // Token 의 만료날까지 지금보다 이전인지 check
         return expiredDate.before(new Date());
     }
 
     // SecretKey를 통해서 Token Parsing
-    public static Claims extractClaims(String token,String secretkey){
+    public static Claims extractClaims(String token, String secretkey) {
         return Jwts.parser().setSigningKey(secretkey).parseClaimsJws(token).getBody();
-    }
-    // Repository에서 user_email꺼내기
-    public User getUserByEmail(String user_email) {
-        return userService.getUserByEmail(user_email);
     }
 }

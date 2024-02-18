@@ -15,7 +15,6 @@ import com.example.spring_study.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,6 +29,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    // 회원가입
     @Transactional
     public ResponseDto create(JoinDto joinDto) {
         if (!userRepository.findByEmail(joinDto.getEmail()).isEmpty()) {
@@ -41,10 +41,7 @@ public class UserService {
         return new ResponseDto(SUCCESS);
     }
 
-    public User getUserByEmail(String user_email) {
-        return userRepository.findByEmail(user_email).get();
-    }
-
+    // 로그인
     @Transactional(readOnly = true)
     public User login(LoginDto loginDto) {
         User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow(
@@ -64,6 +61,7 @@ public class UserService {
         return user;
     }
 
+    // 엔티티 변환
     private User dtoToEntity(JoinDto joinDto) {
         return User.builder()
                 .email(joinDto.getEmail())

@@ -32,7 +32,8 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> {
             web.ignoring()
-                    .antMatchers("/", "/auth/**", "/user/login", "/user/join", "/swagger-ui/**", "/v3/api-docs/**")
+                    .antMatchers("/", "/auth/**", "/user/login", "/user/join", "/swagger-ui/**", "/v3/api-docs/**",
+                            "/calendar/*")
                     .antMatchers("/upload");
 
         };

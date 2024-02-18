@@ -36,19 +36,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         String token = request.getHeader("Authorization");
         try {
-            // String.utils()를 통해서 유효성 검사 가능
             if (token == null || !token.startsWith("Bearer ")) {
                 throw new BaseException(INVALID_JWT);
-//        Cookie[] cookies = request.getCookies();
-//        String token = "";
-//        try {
-//            if (cookies != null) {
-//                for (Cookie cookie : cookies) {
-//                    if (cookie.getName().equals("token")) {
-//                        token = cookie.getValue();
-//                    }
-//                }
-//            }
             }
             token = token.replace("Bearer ", "");
             String email = jwtTokenProvider.getUserEmail(token);
@@ -58,8 +47,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             if (email != null) {
                 User user = userRepository.findByEmail(email).get();
                 CustomUserDetails userDetails = new CustomUserDetails(user);
-//                Authentication authentication = new UsernamePasswordAuthenticationToken(email, password,
-//                        userDetails.getAuthorities());
                 Authentication authentication = new UsernamePasswordAuthenticationToken(email, password,
                         userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);

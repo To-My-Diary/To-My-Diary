@@ -26,7 +26,7 @@ public enum ResponseStatus {
     LOGIN_FAIL(false, HttpStatus.FORBIDDEN.value(), "로그인 실패입니다."),
     DUPLI_AUTHORIZATION_CODE(false, HttpStatus.FORBIDDEN.value(), "중복된 인가 코드입니다."),
     NO_SCHEDULE(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 스케줄입니다.");
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
     private final boolean isSuccess;
     private final int code;
     private final String message;

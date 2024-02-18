@@ -79,10 +79,14 @@ public class DiaryController {
     @PostMapping("/upload")
     public ResponseEntity<String> saveFile(@RequestParam(name = "file") List<MultipartFile> files,
                                            @RequestParam(name = "diaryId") Long diaryId) throws IOException {
+        for (MultipartFile file : files) {
+            System.out.println(file);
+        }
         try {
             fileService.save(files, diaryId); // db에 저장
             return ResponseEntity.ok("Image uploaded successfully");
         } catch (IOException e) { // 에러 처리
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image.");
         }
     }
