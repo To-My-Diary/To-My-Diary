@@ -34,10 +34,6 @@ public class User extends BaseEntity {
     private String role;
 
 
-    public void addGoalList(Goal goal) {
-        goal.setUser(this);
-    }
-
     public List<String> getRoleList() {
         if (this.role.length() > 0) {
             return Arrays.asList(this.role.split(","));

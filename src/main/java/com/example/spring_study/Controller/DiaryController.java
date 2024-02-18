@@ -12,6 +12,7 @@ import com.example.spring_study.Service.DiaryService;
 import com.example.spring_study.Service.FileService;
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +42,13 @@ public class DiaryController {
         return diaryService.searchById(id);
     }
 
+    @GetMapping("/diary/{year}/{month}/{day}")
+    public ResponseDto searchByDay(@PathVariable("year") int year, @PathVariable("month") int month,
+                                   @PathVariable("day") int day,
+                                   Principal principal) {
+        return new ResponseDto(diaryService.searchByDay(LocalDate.of(year, month, day), principal.getName()));
+    }
+
     //전체 조회(목록)
     @GetMapping("/wholeview/diary")
     public List<Diary> searchAllDesc(Principal principal) {
@@ -52,7 +60,8 @@ public class DiaryController {
      */
     @PostMapping("/save/diary")
     public ResponseDto saveDiary(@RequestBody DiaryDto diaryDto, Principal principal) {
-        return new ResponseDto(diaryService.saveDiary(diaryDto, principal.getName()));
+        diaryService.saveDiary(diaryDto, principal.getName());
+        return new ResponseDto(ResponseStatus.SUCCESS);
     }
 
     /**

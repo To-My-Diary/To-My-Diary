@@ -1,22 +1,27 @@
 package com.example.spring_study.Entity;
 
 import com.example.spring_study.Enum.EmotionEnum;
-import groovyjarjarantlr4.v4.runtime.misc.NotNull;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder // 빌더 어노테이션 위치 수정
 @Data
-public class Diary extends BaseEntity{
+public class Diary extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long diaryId;
@@ -29,8 +34,8 @@ public class Diary extends BaseEntity{
     //@ManyToOne(targetEntity= Image.class,fetch=FetchType.EAGER)
     //@OneToMany
     //@JoinTable(name="Image", //매핑할 조인 테이블 이름
-      //      joinColumns = @JoinColumn(name="img"),//현재 엔터티를 참조하는 외래 키
-        //    inverseJoinColumns = @JoinColumn(name="id")) //반대 엔터티의 외래키
+    //      joinColumns = @JoinColumn(name="img"),//현재 엔터티를 참조하는 외래 키
+    //    inverseJoinColumns = @JoinColumn(name="id")) //반대 엔터티의 외래키
     //private List<Image> img=new ArrayList<Image>(); //이미지
 
     @Column(columnDefinition = "TEXT", nullable = false, length = 32767)
@@ -40,8 +45,8 @@ public class Diary extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private EmotionEnum emotion; // 기분
 
-    @JoinColumn(name="user_id")
-    @ManyToOne
+    @JoinColumn(name = "user_email")
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     public void update(String subject, String content, EmotionEnum emotion) {

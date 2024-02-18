@@ -47,8 +47,7 @@ public class Goal extends BaseEntity {
 
     private String color; // 색깔
 
-    @JoinColumn(name = "user_id")
-
+    @JoinColumn(name = "user_email")
     @ManyToOne
     private User user;
 

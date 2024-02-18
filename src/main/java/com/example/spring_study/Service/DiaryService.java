@@ -5,6 +5,7 @@ import com.example.spring_study.Entity.Diary;
 import com.example.spring_study.Entity.User;
 import com.example.spring_study.Repository.DiaryRepository;
 import com.example.spring_study.Repository.UserRepository;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,18 +38,15 @@ public class DiaryService {
     /**
      * 일기 저장
      */
-    public long saveDiary(DiaryDto diaryDto, String name) {
+    public void saveDiary(DiaryDto diaryDto, String name) {
         User user = userRepository.findByEmail(name).get();
         diaryDto.setUserId(user.getEmail());
         try {
             diaryRepository.save(dtoToEntity(diaryDto));
             System.out.println("[" + diaryDto.getSubject() + "] 일기가 저장됐습니다.");
-            return diaryDto.getDiaryId();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return 0;
-
     }
 
     /**
@@ -87,4 +85,7 @@ public class DiaryService {
         return diary;
     }
 
+    public List<Diary> searchByDay(LocalDate date, String userEmail) {
+        return diaryRepository.findAllByCreateDateAndUser_email(date, userEmail);
+    }
 }
